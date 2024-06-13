@@ -79,6 +79,7 @@ class activation_function:
     def INPUT_TYPES(s):
         return {
             "required": {
+
             },
             "optional": {
                 "layer": ("LAYER",),

@@ -8,6 +8,9 @@ class forward_test:
             "required": {
                 "tensor": ("TENSOR",),
                 'model': ('MODELS_CLASS',),
+                "Flatten": ("BOOLEAN", {"default": False}),
+                'return_shape': ("BOOLEAN", {"default": False}),
+
             },
         }
 
@@ -17,23 +20,13 @@ class forward_test:
     OUTPUT_NODE = True
     CATEGORY = "Build and train your network"
 
-    def forward_i_test(self, tensor, model):
+    def forward_i_test(self, tensor, model, Flatten=False, return_shape=False):
         out = model(tensor)
+        if Flatten:
+            if return_shape:
+                return (out.view(out.size(0), -1).shape,)
+            return (out.view(out.size(0), -1),)
+        if return_shape:
+            return (out.shape,)
         return (out,)
 
-class show_shape:
-    @classmethod
-    def INPUT_TYPES(s):
-        return {
-            "required": {
-                "tensor": ("TENSOR",),
-            },
-        }
-    RETURN_TYPES = ("TENSOR",)
-    RETURN_NAMES = ('tensor Dimensions',)
-    FUNCTION = "show_i_shape"
-    OUTPUT_NODE = False
-    CATEGORY = "Build and train your network"
-
-    def show_i_shape(self, tensor):
-        return (tensor.shape,)
