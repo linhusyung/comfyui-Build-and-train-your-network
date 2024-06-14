@@ -1,6 +1,7 @@
 import torch
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
+from torch import nn
 
 if __name__ == '__main__':
     resize_w_h = '[512, 512]'
@@ -22,14 +23,14 @@ if __name__ == '__main__':
     val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False)
     for data, label in train_loader:
         print(data.shape, label.shape)
-    # mean = torch.zeros(3)
-    # std = torch.zeros(3)
-    #
-    # for images, labels in train_loader:
-    #     print(images.shape)
-    #     for i in range(3):
-    #         mean[i] += images[:, i, :, :].mean()
-    #         std[i] += images[:, i, :, :].std()
-    # mean.div_(len(train_dataset))
-    # std.div_(len(train_dataset))
-    # print(mean, std)
+    mean = torch.zeros(3)
+    std = torch.zeros(3)
+
+    for images, labels in train_loader:
+        print(images.shape)
+        for i in range(3):
+            mean[i] += images[:, i, :, :].mean()
+            std[i] += images[:, i, :, :].std()
+    mean.div_(len(train_dataset))
+    std.div_(len(train_dataset))
+    print(mean, std)

@@ -30,3 +30,20 @@ class forward_test:
             return (out.shape,)
         return (out,)
 
+class show_dimensions:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "tensor": ("TENSOR",),
+            },
+        }
+
+    RETURN_TYPES = ("TENSOR",)
+    RETURN_NAMES = ('tensor',)
+    FUNCTION = "p_shape"
+    OUTPUT_NODE = True
+    CATEGORY = "Build and train your network"
+
+    def p_shape(self, tensor):
+        return (tensor.shape,)

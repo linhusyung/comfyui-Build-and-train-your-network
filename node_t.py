@@ -10,7 +10,8 @@ NODE_CLASS_MAPPINGS = {
     'create_intput': create_intput,
     "forward_test": forward_test,
     'create_dataset': create_dataset,
-    'create_training_task': create_training_task
+    'create_training_task': create_training_task,
+    'show_dimensions': show_dimensions
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -21,5 +22,6 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     'create_intput': 'create intput',
     "forward_test": 'forward_test',
     'create_dataset': 'create dataset',
-    'create_training_task': 'training'
+    'create_training_task': 'training',
+    'show_dimensions': 'show dimensions'
 }

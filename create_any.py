@@ -24,7 +24,7 @@ class net(pl.LightningModule):
     def training_step(self, batch, batch_idx):
         data, label = batch
         out = self(data)
-        loss = self.MSE(out)
+        loss = self.CEB(out)
         self.log('train_loss', loss, prog_bar=True)
         return loss
 
@@ -99,8 +99,8 @@ class create_dataset:
             }
         }
 
-    RETURN_TYPES = ("DATESET", "DATESET",)
-    RETURN_NAMES = ('train dataset', 'val dataset',)
+    RETURN_TYPES = ("DATESET", "DATESET", 'TENSOR')
+    RETURN_NAMES = ('train dataset', 'val dataset', 'test data')
     FUNCTION = "create_init_dataset"
     OUTPUT_NODE = True
     CATEGORY = "Build and train your network"
@@ -123,8 +123,8 @@ class create_dataset:
         train_dataset = datasets.ImageFolder(root=train_data_path, transform=transform)
         if val_data:
             val_dataset = datasets.ImageFolder(root=val_data_path, transform=transform)
-            return (train_dataset, val_dataset,)
-        return ((train_dataset),)
+            return (train_dataset, val_dataset, train_dataset[0][0])
+        return (train_dataset, None, train_dataset[0][0])
 
 
 class create_training_task:

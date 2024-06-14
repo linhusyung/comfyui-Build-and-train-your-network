@@ -79,7 +79,9 @@ class activation_function:
     def INPUT_TYPES(s):
         return {
             "required": {
-
+                "act_func_type": (
+                    ['ReLU', 'Sigmoid', 'Tanh',
+                     'Softmax', 'LeakyReLU'],),
             },
             "optional": {
                 "layer": ("LAYER",),
@@ -92,10 +94,22 @@ class activation_function:
     OUTPUT_NODE = True
     CATEGORY = "Build and train your network"
 
-    def init_layer(self, layer=None):
+    def __init__(self):
+        self.Chart = {
+            'ReLU': nn.ReLU(),
+            'Sigmoid': nn.Sigmoid(),
+            'Tanh': nn.Tanh(),
+            'Softmax': nn.Softmax(dim=-1),
+            'LeakyReLU': nn.LeakyReLU(),
+        }
+
+    def init_layer(self, act_func_type, layer=None, ):
         if isinstance(layer, nn.ModuleList):
-            layer.append(nn.ReLU())
+            layer_a = copy.deepcopy(layer)
+            del layer
+            layer_a.append(self.Chart[act_func_type])
+            layer = copy.deepcopy(layer_a)
         else:
             layer = nn.ModuleList()
-            layer.append(nn.ReLU())
+            layer.append(self.Chart[act_func_type])
         return (layer,)
