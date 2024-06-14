@@ -3,7 +3,6 @@ from torch import nn
 import pytorch_lightning as pl
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
-from torch.utils.data import DataLoader
 from pytorch_lightning import Trainer
 
 
@@ -24,14 +23,14 @@ class net(pl.LightningModule):
     def training_step(self, batch, batch_idx):
         data, label = batch
         out = self(data)
-        loss = self.CEB(out)
+        loss = self.CEB(out,label)
         self.log('train_loss', loss, prog_bar=True)
         return loss
 
     def validation_step(self, batch, batch_idx):
         data, label = batch
         out = self(data)
-        loss = self.MSE(out)
+        loss = self.CEB(out,label)
         self.log('val_loss', loss, prog_bar=True)
         return loss
 
@@ -123,8 +122,8 @@ class create_dataset:
         train_dataset = datasets.ImageFolder(root=train_data_path, transform=transform)
         if val_data:
             val_dataset = datasets.ImageFolder(root=val_data_path, transform=transform)
-            return (train_dataset, val_dataset, train_dataset[0][0])
-        return (train_dataset, None, train_dataset[0][0])
+            return (train_dataset, val_dataset, train_dataset[0][0].unsqueeze(0))
+        return (train_dataset, None, train_dataset[0][0].unsqueeze(0))
 
 
 class create_training_task:
@@ -152,12 +151,12 @@ class create_training_task:
     def create_init_train(self, train_dataset, model, val_dataset=None, batch_size=8, epochs=100):
         if val_dataset is None:
             train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-            trainer = Trainer(max_epochs=epochs, accelerator='gpu', devices=1)
+            trainer = Trainer(max_epochs=epochs, accelerator='auto', devices=1)
             trainer.fit(model, train_dataloaders=train_dataloader)
         else:
             train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
             val_dataloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
-
+            trainer = Trainer(max_epochs=epochs, accelerator='auto', devices=1)
             trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
             return (model,)
         return (model,)

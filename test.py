@@ -3,6 +3,8 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 from torch import nn
 
+
+
 if __name__ == '__main__':
     resize_w_h = '[512, 512]'
     resize_w_h = eval(resize_w_h)

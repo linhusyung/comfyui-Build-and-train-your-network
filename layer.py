@@ -5,6 +5,46 @@ import time
 import os
 
 
+class view(nn.Module):
+    def __init__(self, d):
+        super().__init__()
+        self.d = d
+
+    def forward(self, tensor):
+        return tensor.view(tensor.size(0), self.d)
+
+
+class view_layer:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "flatten_dimension": (
+                    "INT", {"default": -1, "min": -99, "max": 0xffffffffffffffff, "step": 1, }),
+            },
+            "optional": {
+                "layer": ("LAYER",),
+            }
+        }
+
+    RETURN_TYPES = ("LAYER",)
+    RETURN_NAMES = ('LAYER',)
+    FUNCTION = "init_layer"
+    OUTPUT_NODE = True
+    CATEGORY = "Build and train your network"
+
+    def init_layer(self, layer=None, flatten_dimension=-1):
+        if isinstance(layer, nn.ModuleList):
+            layer_a = copy.deepcopy(layer)
+            del layer
+            layer_a.append(view(flatten_dimension))
+            layer = copy.deepcopy(layer_a)
+        else:
+            layer = nn.ModuleList()
+            layer.append(view(flatten_dimension))
+        return (layer,)
+
+
 class linear_layer:
     @classmethod
     def INPUT_TYPES(s):
