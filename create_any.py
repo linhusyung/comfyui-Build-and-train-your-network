@@ -9,28 +9,32 @@ from pytorch_lightning import Trainer
 class net(pl.LightningModule):
     def __init__(self, layer):
         super().__init__()
-        self.layer = layer
+        self.layer = layer[0]
+        self.res_seq = layer[1]
 
         self.MSE = nn.MSELoss()
         self.CEB = nn.CrossEntropyLoss()
         self.BCE = nn.BCELoss()
 
     def forward(self, x):
-        for i in self.layer:
+        res = []
+        for idx, i in enumerate(self.layer):
             x = i(x)
+            if idx == self.res_seq:
+                res.append(x)
         return x
 
     def training_step(self, batch, batch_idx):
         data, label = batch
         out = self(data)
-        loss = self.CEB(out,label)
+        loss = self.CEB(out, label)
         self.log('train_loss', loss, prog_bar=True)
         return loss
 
     def validation_step(self, batch, batch_idx):
         data, label = batch
         out = self(data)
-        loss = self.CEB(out,label)
+        loss = self.CEB(out, label)
         self.log('val_loss', loss, prog_bar=True)
         return loss
 
@@ -75,7 +79,7 @@ class create_model():
 
     def create_init_model(self, layer):
         model = net(layer)
-        return (model,)
+        return ((model, layer[1]),)
 
 
 class create_dataset:

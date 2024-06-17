@@ -1,38 +1,39 @@
 import torch
-from torchvision import datasets, transforms
-from torch.utils.data import DataLoader
 from torch import nn
+from torch.nn import ModuleList
 
+
+class net(nn.Module):
+    def __init__(self, layer):
+        super().__init__()
+        self.layer = layer[0]
+        self.res_seq = layer[1]
+
+        self.MSE = nn.MSELoss()
+        self.CEB = nn.CrossEntropyLoss()
+        self.BCE = nn.BCELoss()
+
+    def forward(self, x):
+        outputs = [x]
+        for i, layer in enumerate(self.layer):
+            out = layer(outputs[-1])
+
+            for res in self.res_seq:
+                if res[1] == i:
+                    out += outputs[res[0]]
+            outputs.append(out)
+        return outputs[-1]
 
 
 if __name__ == '__main__':
-    resize_w_h = '[512, 512]'
-    resize_w_h = eval(resize_w_h)
-    resize_transform = transforms.Resize(resize_w_h)
-
-    transform = transforms.Compose([
-        transforms.Resize(resize_w_h),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-    ])
-
-    train_dataset = datasets.ImageFolder(root='./dataset/train', transform=transform)
-    val_dataset = datasets.ImageFolder(root='./dataset/val', transform=transform)
-
-    batch_size = int(32)
-    print(batch_size, type(batch_size))
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False)
-    for data, label in train_loader:
-        print(data.shape, label.shape)
-    mean = torch.zeros(3)
-    std = torch.zeros(3)
-
-    for images, labels in train_loader:
-        print(images.shape)
-        for i in range(3):
-            mean[i] += images[:, i, :, :].mean()
-            std[i] += images[:, i, :, :].std()
-    mean.div_(len(train_dataset))
-    std.div_(len(train_dataset))
-    print(mean, std)
+    layer = ModuleList()
+    layer.append(nn.Linear(10, 10))
+    layer.append(nn.Linear(10, 10))
+    layer.append(nn.Linear(10, 10))
+    layer.append(nn.Linear(10, 10))
+    layer.append(nn.Linear(10, 10))
+    layer.append(nn.Linear(10, 10))
+    layer = (layer, [(0, 3)])
+    net = net(layer)
+    x = torch.rand(([1, 10]))
+    print(net(x).shape)
