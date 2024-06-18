@@ -35,7 +35,7 @@ class linear_layer:
             layer_.append(nn.Linear(in_features=in_features, out_features=out_features))
             rt_res = []
             layer = [layer_, rt_res]
-            return (layer, len(layer[0]) - 1,)
+            return (layer, [len(layer[0]) - 1],)
 
         if layer is not None and res is None:
             print('1,0')
@@ -44,7 +44,7 @@ class linear_layer:
             layer_a[0].append(nn.Linear(in_features=in_features, out_features=out_features))
             layer = copy.deepcopy(layer_a)
             del layer_a
-            return (layer, len(layer[0]) - 1,)
+            return (layer, [len(layer[0]) - 1],)
 
         if res is not None and layer is not None:
             print('1,1')
@@ -53,12 +53,17 @@ class linear_layer:
             layer_a[0].append(nn.Linear(in_features=in_features, out_features=out_features))
             layer = copy.deepcopy(layer_a)
             del layer_a
-            layer[1].append((res, len(layer[0]) - 1, res_type))
-            return (layer, len(layer[0]) - 1,)
-        if layer is None and res is not None :
+            if len(res) <= 1:
+                layer[1].append((res[0], len(layer[0]) - 1, res_type))
+            else:
+                layer[1].append((res[0], len(layer[0]) - 1, res_type, res[1]))
+
+            return (layer, [len(layer[0]) - 1],)
+
+        if layer is None and res is not None:
             print('0,1')
             pass
-            return (layer, len(layer[0]) - 1,)
+            return (layer, [len(layer[0]) - 1],)
 
 
 class view(nn.Module):
