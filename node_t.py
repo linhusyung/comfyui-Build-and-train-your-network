@@ -1,6 +1,7 @@
 from .layer import *
 from .create_any import *
 from .model_forward import *
+from .unit import *
 
 NODE_CLASS_MAPPINGS = {
     "linear_layer": linear_layer,
@@ -12,7 +13,8 @@ NODE_CLASS_MAPPINGS = {
     'create_dataset': create_dataset,
     'create_training_task': create_training_task,
     'show_dimensions': show_dimensions,
-    'view_layer': view_layer
+    'view_layer': view_layer,
+    'res_connect': res_connect
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -25,5 +27,6 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     'create_dataset': 'create dataset',
     'create_training_task': 'training',
     'show_dimensions': 'show dimensions',
-    'view_layer': 'view layer'
+    'view_layer': 'view layer',
+    'res_connect': 'res connect'
 }

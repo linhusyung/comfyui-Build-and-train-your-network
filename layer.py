@@ -30,7 +30,6 @@ class linear_layer:
 
     def init_layer(self, layer=None, in_features=10, out_features=10, res=None, res_type=None):
         if layer is None and res is None:
-            print('0,0')
             layer_ = nn.ModuleList()
             layer_.append(nn.Linear(in_features=in_features, out_features=out_features))
             rt_res = []
@@ -38,7 +37,6 @@ class linear_layer:
             return (layer, [len(layer[0]) - 1],)
 
         if layer is not None and res is None:
-            print('1,0')
             layer_a = copy.deepcopy(layer)
             del layer
             layer_a[0].append(nn.Linear(in_features=in_features, out_features=out_features))
@@ -47,24 +45,38 @@ class linear_layer:
             return (layer, [len(layer[0]) - 1],)
 
         if res is not None and layer is not None:
-            print('1,1')
             layer_a = copy.deepcopy(layer)
             del layer
             layer_a[0].append(nn.Linear(in_features=in_features, out_features=out_features))
+
+            if len(res) <= 1:
+                layer_a[1].append((res[0], len(layer_a[0]) - 1, res_type))
+            else:
+                if isinstance(res, tuple):
+                    for i in res:
+                        layer_a[1].append((i[0], len(layer_a[0]) - 1, res_type, i[1]))
+                else:
+                    layer_a[1].append((res[0], len(layer_a[0]) - 1, res_type, res[1]))
             layer = copy.deepcopy(layer_a)
             del layer_a
-            if len(res) <= 1:
-                layer[1].append((res[0], len(layer[0]) - 1, res_type))
-            else:
-                layer[1].append((res[0], len(layer[0]) - 1, res_type, res[1]))
-
-            return (layer, [len(layer[0]) - 1],)
+            return (layer, [(len(layer[0]) - 1),],)
 
         if layer is None and res is not None:
-            #TODO 传入一个能够识别残差要的ModuleList、可以的话搞一搞分支问题
-            print('0,1')
-            pass
-            return (layer, [len(layer[0]) - 1],)
+            if len(res) <= 1:
+                res_layer = nn.ModuleList()
+                res_layer.append(nn.Linear(in_features=in_features, out_features=out_features))
+                res_a = copy.deepcopy(res)
+                del res
+                res_a.append(res_layer)
+                res = copy.deepcopy(res_a)
+                del res_a
+            else:
+                res_a = copy.deepcopy(res)
+                del res
+                res_a[1].append(nn.Linear(in_features=in_features, out_features=out_features))
+                res = copy.deepcopy(res_a)
+                del res_a
+            return (layer, res,)
 
 
 class view(nn.Module):
