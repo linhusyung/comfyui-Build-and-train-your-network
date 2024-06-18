@@ -1,221 +1,45 @@
 {
-  "last_node_id": 64,
-  "last_link_id": 85,
+  "last_node_id": 82,
+  "last_link_id": 143,
   "nodes": [
     {
-      "id": 63,
-      "type": "Conv_layer",
+      "id": 76,
+      "type": "easy showAnything",
       "pos": [
-        -610,
-        478
+        522,
+        488
       ],
       "size": {
-        "0": 334.9347229003906,
-        "1": 154
+        "0": 360.8075866699219,
+        "1": 179.93394470214844
       },
       "flags": {},
-      "order": 3,
+      "order": 11,
       "mode": 0,
       "inputs": [
         {
-          "name": "layer",
-          "type": "LAYER",
-          "link": 79
-        }
-      ],
-      "outputs": [
-        {
-          "name": "LAYER",
-          "type": "LAYER",
-          "links": [
-            80
-          ],
-          "shape": 3,
-          "slot_index": 0
+          "name": "anything",
+          "type": "*",
+          "link": 119
         }
       ],
       "properties": {
-        "Node name for S&R": "Conv_layer"
+        "Node name for S&R": "easy showAnything"
       },
       "widgets_values": [
-        3,
-        3,
-        3,
-        1,
-        2
+        "[10, 2]"
       ]
     },
     {
-      "id": 27,
-      "type": "Conv_layer",
+      "id": 48,
+      "type": "create_model",
       "pos": [
-        -670,
-        724
+        -280,
+        1177
       ],
       "size": {
-        "0": 334.9347229003906,
-        "1": 154
-      },
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "layer",
-          "type": "LAYER",
-          "link": 80
-        }
-      ],
-      "outputs": [
-        {
-          "name": "LAYER",
-          "type": "LAYER",
-          "links": [
-            62
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "Conv_layer"
-      },
-      "widgets_values": [
-        3,
-        3,
-        3,
-        1,
-        2
-      ]
-    },
-    {
-      "id": 54,
-      "type": "view_layer",
-      "pos": [
-        -681,
-        935
-      ],
-      "size": {
-        "0": 315,
-        "1": 58
-      },
-      "flags": {},
-      "order": 5,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "layer",
-          "type": "LAYER",
-          "link": 62
-        }
-      ],
-      "outputs": [
-        {
-          "name": "LAYER",
-          "type": "LAYER",
-          "links": [
-            64
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "view_layer"
-      },
-      "widgets_values": [
-        -1
-      ]
-    },
-    {
-      "id": 44,
-      "type": "activation_function",
-      "pos": [
-        -672,
-        1038
-      ],
-      "size": {
-        "0": 315,
-        "1": 58
-      },
-      "flags": {},
-      "order": 6,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "layer",
-          "type": "LAYER",
-          "link": 64
-        }
-      ],
-      "outputs": [
-        {
-          "name": "layer",
-          "type": "LAYER",
-          "links": [
-            51
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "activation_function"
-      },
-      "widgets_values": [
-        "ReLU"
-      ]
-    },
-    {
-      "id": 46,
-      "type": "linear_layer",
-      "pos": [
-        -764,
-        1163
-      ],
-      "size": {
-        "0": 315,
-        "1": 82
-      },
-      "flags": {},
-      "order": 7,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "layer",
-          "type": "LAYER",
-          "link": 51
-        }
-      ],
-      "outputs": [
-        {
-          "name": "LAYER",
-          "type": "LAYER",
-          "links": [
-            52
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "linear_layer"
-      },
-      "widgets_values": [
-        3072,
-        2
-      ]
-    },
-    {
-      "id": 47,
-      "type": "activation_function",
-      "pos": [
-        -799,
-        1300
-      ],
-      "size": {
-        "0": 315,
-        "1": 58
+        "0": 210,
+        "1": 26
       },
       "flags": {},
       "order": 8,
@@ -224,46 +48,7 @@
         {
           "name": "layer",
           "type": "LAYER",
-          "link": 52
-        }
-      ],
-      "outputs": [
-        {
-          "name": "layer",
-          "type": "LAYER",
-          "links": [
-            85
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "activation_function"
-      },
-      "widgets_values": [
-        "Softmax"
-      ]
-    },
-    {
-      "id": 48,
-      "type": "create_model",
-      "pos": [
-        -328,
-        1248
-      ],
-      "size": {
-        "0": 210,
-        "1": 26
-      },
-      "flags": {},
-      "order": 9,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "layer",
-          "type": "LAYER",
-          "link": 85
+          "link": 138
         }
       ],
       "outputs": [
@@ -271,7 +56,8 @@
           "name": "model",
           "type": "MODELS_CLASS",
           "links": [
-            69
+            118,
+            132
           ],
           "shape": 3,
           "slot_index": 0
@@ -282,116 +68,75 @@
       }
     },
     {
-      "id": 55,
-      "type": "create_training_task",
+      "id": 72,
+      "type": "easy showAnything",
       "pos": [
-        -29,
-        1365
+        204,
+        1019
       ],
-      "size": {
-        "0": 315,
-        "1": 122
-      },
+      "size": [
+        360.8075825750011,
+        179.93393806332074
+      ],
       "flags": {},
       "order": 10,
       "mode": 0,
       "inputs": [
         {
-          "name": "train_dataset",
-          "type": "DATESET",
-          "link": 67,
-          "slot_index": 0
-        },
-        {
-          "name": "model",
-          "type": "MODELS_CLASS",
-          "link": 69
-        },
-        {
-          "name": "val_dataset",
-          "type": "DATESET",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "model",
-          "type": "MODELS_CLASS",
-          "links": null,
-          "shape": 3
+          "name": "anything",
+          "type": "*",
+          "link": 132
         }
       ],
       "properties": {
-        "Node name for S&R": "create_training_task"
+        "Node name for S&R": "easy showAnything"
       },
       "widgets_values": [
-        1024,
-        100
+        "net(\n  (layer): ModuleList(\n    (0): Linear(in_features=10, out_features=10, bias=True)\n    (1): Linear(in_features=10, out_features=20, bias=True)\n    (2): Linear(in_features=20, out_features=10, bias=True)\n    (3): Linear(in_features=10, out_features=2, bias=True)\n  )\n  (MSE): MSELoss()\n  (CEB): CrossEntropyLoss()\n  (BCE): BCELoss()\n)"
       ]
     },
     {
-      "id": 40,
-      "type": "create_dataset",
+      "id": 75,
+      "type": "create_intput",
       "pos": [
-        -527,
-        1520
+        46,
+        423
       ],
       "size": {
-        "0": 382.31732177734375,
-        "1": 266
+        "0": 315,
+        "1": 58
       },
       "flags": {},
       "order": 0,
       "mode": 0,
       "outputs": [
         {
-          "name": "train dataset",
-          "type": "DATESET",
+          "name": "tensor",
+          "type": "TENSOR",
           "links": [
-            67
+            116
           ],
           "shape": 3,
           "slot_index": 0
-        },
-        {
-          "name": "val dataset",
-          "type": "DATESET",
-          "links": [],
-          "shape": 3,
-          "slot_index": 1
-        },
-        {
-          "name": "test data",
-          "type": "TENSOR",
-          "links": [],
-          "shape": 3,
-          "slot_index": 2
         }
       ],
       "properties": {
-        "Node name for S&R": "create_dataset"
+        "Node name for S&R": "create_intput"
       },
       "widgets_values": [
-        true,
-        true,
-        "D:/ComfyUI_windows_portable_nvidia_cu121_or_cpu/ComfyUI_windows_portable/ComfyUI/custom_nodes/comfyui_train/dataset/train",
-        true,
-        "[512, 512]",
-        "[0.485, 0.456, 0.406]",
-        "[0.229, 0.224, 0.225]",
-        "D:/ComfyUI_windows_portable_nvidia_cu121_or_cpu/ComfyUI_windows_portable/ComfyUI/custom_nodes/comfyui_train/dataset/val"
+        "[10,10]"
       ]
     },
     {
-      "id": 61,
-      "type": "Conv_layer",
+      "id": 66,
+      "type": "linear_layer",
       "pos": [
-        -639,
-        231
+        -773,
+        567
       ],
       "size": {
-        "0": 334.9347229003906,
-        "1": 154
+        "0": 315,
+        "1": 126
       },
       "flags": {},
       "order": 2,
@@ -400,7 +145,12 @@
         {
           "name": "layer",
           "type": "LAYER",
-          "link": 78
+          "link": 98
+        },
+        {
+          "name": "res",
+          "type": "RES",
+          "link": null
         }
       ],
       "outputs": [
@@ -408,33 +158,141 @@
           "name": "LAYER",
           "type": "LAYER",
           "links": [
-            79
+            99
           ],
           "shape": 3,
           "slot_index": 0
+        },
+        {
+          "name": "res",
+          "type": "RES",
+          "links": null,
+          "shape": 3
         }
       ],
       "properties": {
-        "Node name for S&R": "Conv_layer"
+        "Node name for S&R": "linear_layer"
       },
       "widgets_values": [
-        3,
-        3,
-        3,
-        1,
-        2
+        10,
+        20,
+        "add"
       ]
     },
     {
-      "id": 62,
-      "type": "Conv_layer",
+      "id": 68,
+      "type": "linear_layer",
       "pos": [
-        -638,
-        -49
+        -776,
+        803
       ],
       "size": {
-        "0": 334.9347229003906,
-        "1": 154
+        "0": 315,
+        "1": 126
+      },
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "layer",
+          "type": "LAYER",
+          "link": 99
+        },
+        {
+          "name": "res",
+          "type": "RES",
+          "link": 143
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LAYER",
+          "type": "LAYER",
+          "links": [
+            100
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "res",
+          "type": "RES",
+          "links": null,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "linear_layer"
+      },
+      "widgets_values": [
+        20,
+        10,
+        "add"
+      ]
+    },
+    {
+      "id": 70,
+      "type": "linear_layer",
+      "pos": [
+        -784,
+        1016
+      ],
+      "size": {
+        "0": 315,
+        "1": 126
+      },
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "layer",
+          "type": "LAYER",
+          "link": 100
+        },
+        {
+          "name": "res",
+          "type": "RES",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LAYER",
+          "type": "LAYER",
+          "links": [
+            138
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "res",
+          "type": "RES",
+          "links": null,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "linear_layer"
+      },
+      "widgets_values": [
+        10,
+        2,
+        "add"
+      ]
+    },
+    {
+      "id": 46,
+      "type": "linear_layer",
+      "pos": [
+        -781,
+        329
+      ],
+      "size": {
+        "0": 315,
+        "1": 126
       },
       "flags": {},
       "order": 1,
@@ -444,6 +302,11 @@
           "name": "layer",
           "type": "LAYER",
           "link": null
+        },
+        {
+          "name": "res",
+          "type": "RES",
+          "link": null
         }
       ],
       "outputs": [
@@ -451,114 +314,325 @@
           "name": "LAYER",
           "type": "LAYER",
           "links": [
-            78
+            98
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "res",
+          "type": "RES",
+          "links": [
+            139
+          ],
+          "shape": 3,
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "linear_layer"
+      },
+      "widgets_values": [
+        10,
+        10,
+        "div"
+      ]
+    },
+    {
+      "id": 73,
+      "type": "Reroute",
+      "pos": [
+        -115,
+        447
+      ],
+      "size": [
+        75,
+        26
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "",
+          "type": "*",
+          "link": 139,
+          "slot_index": 0
+        }
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "type": "RES",
+          "links": [
+            140
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "showOutputText": false,
+        "horizontal": false
+      }
+    },
+    {
+      "id": 74,
+      "type": "forward_test",
+      "pos": [
+        148,
+        729
+      ],
+      "size": {
+        "0": 315,
+        "1": 102
+      },
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "tensor",
+          "type": "TENSOR",
+          "link": 116
+        },
+        {
+          "name": "model",
+          "type": "MODELS_CLASS",
+          "link": 118
+        }
+      ],
+      "outputs": [
+        {
+          "name": "tensor",
+          "type": "TENSOR",
+          "links": [
+            119
           ],
           "shape": 3,
           "slot_index": 0
         }
       ],
       "properties": {
-        "Node name for S&R": "Conv_layer"
+        "Node name for S&R": "forward_test"
       },
       "widgets_values": [
-        3,
-        3,
-        3,
-        1,
-        2
+        false,
+        true
+      ]
+    },
+    {
+      "id": 81,
+      "type": "linear_layer",
+      "pos": [
+        -244,
+        531
+      ],
+      "size": {
+        "0": 315,
+        "1": 126
+      },
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "layer",
+          "type": "LAYER",
+          "link": null
+        },
+        {
+          "name": "res",
+          "type": "RES",
+          "link": 140
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LAYER",
+          "type": "LAYER",
+          "links": [],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "res",
+          "type": "RES",
+          "links": [
+            142
+          ],
+          "shape": 3,
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "linear_layer"
+      },
+      "widgets_values": [
+        10,
+        10,
+        "div"
+      ]
+    },
+    {
+      "id": 82,
+      "type": "linear_layer",
+      "pos": [
+        -238,
+        717
+      ],
+      "size": {
+        "0": 315,
+        "1": 126
+      },
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "layer",
+          "type": "LAYER",
+          "link": null
+        },
+        {
+          "name": "res",
+          "type": "RES",
+          "link": 142
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LAYER",
+          "type": "LAYER",
+          "links": [],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "res",
+          "type": "RES",
+          "links": [
+            143
+          ],
+          "shape": 3,
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "linear_layer"
+      },
+      "widgets_values": [
+        10,
+        10,
+        "div"
       ]
     }
   ],
   "links": [
     [
-      51,
-      44,
-      0,
+      98,
       46,
       0,
-      "LAYER"
-    ],
-    [
-      52,
-      46,
-      0,
-      47,
+      66,
       0,
       "LAYER"
     ],
     [
-      62,
-      27,
+      99,
+      66,
       0,
-      54,
-      0,
-      "LAYER"
-    ],
-    [
-      64,
-      54,
-      0,
-      44,
+      68,
       0,
       "LAYER"
     ],
     [
-      67,
-      40,
+      100,
+      68,
       0,
-      55,
+      70,
       0,
-      "DATESET"
+      "LAYER"
     ],
     [
-      69,
+      116,
+      75,
+      0,
+      74,
+      0,
+      "TENSOR"
+    ],
+    [
+      118,
       48,
       0,
-      55,
+      74,
       1,
       "MODELS_CLASS"
     ],
     [
-      78,
-      62,
+      119,
+      74,
       0,
-      61,
+      76,
       0,
-      "LAYER"
+      "*"
     ],
     [
-      79,
-      61,
+      132,
+      48,
       0,
-      63,
+      72,
       0,
-      "LAYER"
+      "*"
     ],
     [
-      80,
-      63,
-      0,
-      27,
-      0,
-      "LAYER"
-    ],
-    [
-      85,
-      47,
+      138,
+      70,
       0,
       48,
       0,
       "LAYER"
+    ],
+    [
+      139,
+      46,
+      1,
+      73,
+      0,
+      "*"
+    ],
+    [
+      140,
+      73,
+      0,
+      81,
+      1,
+      "RES"
+    ],
+    [
+      142,
+      81,
+      1,
+      82,
+      1,
+      "RES"
+    ],
+    [
+      143,
+      82,
+      1,
+      68,
+      1,
+      "RES"
     ]
   ],
   "groups": [],
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.45,
+      "scale": 0.7972024500000017,
       "offset": [
-        2673.865971883138,
-        1267.5555555555554
+        847.4395907299407,
+        -30.492935585499993
       ]
     }
   },
