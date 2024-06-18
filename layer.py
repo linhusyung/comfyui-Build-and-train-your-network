@@ -5,6 +5,62 @@ import time
 import os
 
 
+class linear_layer:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "in_features": ("INT", {"default": 10., "min": 1, "max": 0xffffffffffffffff, "step": 1, }),
+                "out_features": ("INT", {"default": 10., "min": 1, "max": 0xffffffffffffffff, "step": 1, }),
+            },
+            "optional": {
+                "layer": ("LAYER",),
+                'res': ("RES",),
+                "res_type": (
+                    ['add', 'concat', 'Mul', 'div', 'sub'],),
+
+            }
+        }
+
+    RETURN_TYPES = ("LAYER", 'RES',)
+    RETURN_NAMES = ('LAYER', 'res',)
+    FUNCTION = "init_layer"
+    OUTPUT_NODE = True
+    CATEGORY = "Build and train your network"
+
+    def init_layer(self, layer=None, in_features=10, out_features=10, res=None, res_type=None):
+        if layer is None and res is None:
+            print('0,0')
+            layer_ = nn.ModuleList()
+            layer_.append(nn.Linear(in_features=in_features, out_features=out_features))
+            rt_res = []
+            layer = [layer_, rt_res]
+            return (layer, len(layer[0]) - 1,)
+
+        if layer is not None and res is None:
+            print('1,0')
+            layer_a = copy.deepcopy(layer)
+            del layer
+            layer_a[0].append(nn.Linear(in_features=in_features, out_features=out_features))
+            layer = copy.deepcopy(layer_a)
+            del layer_a
+            return (layer, len(layer[0]) - 1,)
+
+        if res is not None and layer is not None:
+            print('1,1')
+            layer_a = copy.deepcopy(layer)
+            del layer
+            layer_a[0].append(nn.Linear(in_features=in_features, out_features=out_features))
+            layer = copy.deepcopy(layer_a)
+            del layer_a
+            layer[1].append((res, len(layer[0]) - 1, res_type))
+            return (layer, len(layer[0]) - 1,)
+        if layer is None and res is not None :
+            print('0,1')
+            pass
+            return (layer, len(layer[0]) - 1,)
+
+
 class view(nn.Module):
     def __init__(self, d):
         super().__init__()
@@ -43,47 +99,6 @@ class view_layer:
             layer = nn.ModuleList()
             layer.append(view(flatten_dimension))
         return (layer,)
-
-
-class linear_layer:
-    @classmethod
-    def INPUT_TYPES(s):
-        return {
-            "required": {
-                "in_features": ("INT", {"default": 10., "min": 1, "max": 0xffffffffffffffff, "step": 1, }),
-                "out_features": ("INT", {"default": 10., "min": 1, "max": 0xffffffffffffffff, "step": 1, }),
-            },
-            "optional": {
-                "layer": ("LAYER",),
-                'res': ("RES",),
-                "res_type": (
-                    ['add', 'concat', 'Mul', 'div', 'sub'],),
-
-            }
-        }
-
-    RETURN_TYPES = ("LAYER", 'RES',)
-    RETURN_NAMES = ('LAYER', 'res',)
-    FUNCTION = "init_layer"
-    OUTPUT_NODE = True
-    CATEGORY = "Build and train your network"
-
-    def init_layer(self, layer=None, in_features=10, out_features=10, res=None, res_type=None):
-        if layer is not None:
-            layer_a = copy.deepcopy(layer)
-            del layer
-            layer_a[0].append(nn.Linear(in_features=in_features, out_features=out_features))
-            layer = copy.deepcopy(layer_a)
-            del layer_a
-        else:
-            layer_ = nn.ModuleList()
-            layer_.append(nn.Linear(in_features=in_features, out_features=out_features))
-            rt_res = []
-            layer = [layer_, rt_res]
-
-        if res is not None:
-            layer[1].append((res, len(layer), res_type))
-        return (layer, len(layer[0]) - 1,)
 
 
 class Conv_layer:

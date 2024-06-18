@@ -20,7 +20,8 @@ class net(nn.Module):
 
             for res in self.res_seq:
                 if res[1] == i:
-                    out += outputs[res[0]]
+                    # out += outputs[res[0]]
+                    out = torch.cat((out, outputs[res[0]]), dim=-1)
             outputs.append(out)
         return outputs[-1]
 
@@ -31,7 +32,7 @@ if __name__ == '__main__':
     layer.append(nn.Linear(10, 10))
     layer.append(nn.Linear(10, 10))
     layer.append(nn.Linear(10, 10))
-    layer.append(nn.Linear(10, 10))
+    layer.append(nn.Linear(20, 10))
     layer.append(nn.Linear(10, 10))
     layer = (layer, [(0, 3)])
     net = net(layer)
