@@ -61,6 +61,7 @@ class linear_layer:
             return (layer, [len(layer[0]) - 1],)
 
         if layer is None and res is not None:
+            #TODO 传入一个能够识别残差要的ModuleList、可以的话搞一搞分支问题
             print('0,1')
             pass
             return (layer, [len(layer[0]) - 1],)
