@@ -14,21 +14,22 @@ class forward_test:
             },
         }
 
-    RETURN_TYPES = ("TENSOR",)
-    RETURN_NAMES = ('tensor',)
+    RETURN_TYPES = ("TENSOR", "TENSOR",)
+    RETURN_NAMES = ('tensor', 'layer tensor',)
     FUNCTION = "forward_i_test"
     OUTPUT_NODE = True
     CATEGORY = "Build and train your network"
 
     def forward_i_test(self, tensor, model, Flatten=False, return_shape=False):
-        out = model(tensor)
+        out, out_list = model(tensor)
         if Flatten:
             if return_shape:
-                return (out.view(out.size(0), -1).shape,)
-            return (out.view(out.size(0), -1),)
+                return (out.view(out.size(0), -1).shape, out_list)
+            return (out.view(out.size(0), -1), out_list)
         if return_shape:
-            return (out.shape,)
-        return (out,)
+            return (out.shape, [x.shape for x in out_list])
+        return (out, out_list)
+
 
 class show_dimensions:
     @classmethod

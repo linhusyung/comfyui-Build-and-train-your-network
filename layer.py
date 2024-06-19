@@ -183,25 +183,79 @@ class view_layer:
             },
             "optional": {
                 "layer": ("LAYER",),
+                'res': ("RES",),
+                "res_type": (
+                    ['add', 'concat-dim=0', 'concat-dim=1', 'concat-dim=2', 'concat-dim=3', 'Mul', 'div', 'sub'],),
             }
         }
 
-    RETURN_TYPES = ("LAYER",)
-    RETURN_NAMES = ('LAYER',)
+    RETURN_TYPES = ("LAYER", 'RES',)
+    RETURN_NAMES = ('LAYER', 'res',)
     FUNCTION = "init_layer"
     OUTPUT_NODE = True
     CATEGORY = "Build and train your network"
 
-    def init_layer(self, layer=None, flatten_dimension=-1):
-        if isinstance(layer, nn.ModuleList):
+    # def init_layer(self, layer=None, flatten_dimension=-1):
+    #     if isinstance(layer, nn.ModuleList):
+    #         layer_a = copy.deepcopy(layer)
+    #         del layer
+    #         layer_a.append(view(flatten_dimension))
+    #         layer = copy.deepcopy(layer_a)
+    #     else:
+    #         layer = nn.ModuleList()
+    #         layer.append(view(flatten_dimension))
+    #     return (layer,)
+
+    def init_layer(self, flatten_dimension=-1, layer=None, res=None, res_type=None):
+        if layer is None and res is None:
+            layer_ = nn.ModuleList()
+            layer_.append(view(flatten_dimension))
+            rt_res = []
+            layer = [layer_, rt_res]
+            return (layer, [len(layer[0]) - 1],)
+
+        if layer is not None and res is None:
             layer_a = copy.deepcopy(layer)
             del layer
-            layer_a.append(view(flatten_dimension))
+            layer_a[0].append(view(flatten_dimension))
             layer = copy.deepcopy(layer_a)
-        else:
-            layer = nn.ModuleList()
-            layer.append(view(flatten_dimension))
-        return (layer,)
+            del layer_a
+            return (layer, [len(layer[0]) - 1],)
+
+        if res is not None and layer is not None:
+            layer_a = copy.deepcopy(layer)
+            del layer
+            layer_a[0].append(view(flatten_dimension))
+
+            if len(res) <= 1:
+                layer_a[1].append((res[0], len(layer_a[0]) - 1, res_type))
+            else:
+                if isinstance(res, tuple):
+                    for i in res:
+                        layer_a[1].append((i[0], len(layer_a[0]) - 1, i[2], i[1]))
+                else:
+                    layer_a[1].append((res[0], len(layer_a[0]) - 1, res_type, res[1]))
+            layer = copy.deepcopy(layer_a)
+            del layer_a
+            return (layer, [(len(layer[0]) - 1), ],)
+
+        if layer is None and res is not None:
+            if len(res) <= 1:
+                res_layer = nn.ModuleList()
+                res_layer.append(view(flatten_dimension))
+                res_a = copy.deepcopy(res)
+                del res
+                res_a.append(res_layer)
+                res = copy.deepcopy(res_a)
+                del res_a
+            else:
+                res_a = copy.deepcopy(res)
+                del res
+                res_a[1].append(view(flatten_dimension))
+                res_a[-1] = res_type
+                res = copy.deepcopy(res_a)
+                del res_a
+            return (layer, res,)
 
 
 class Conv_layer:
@@ -217,26 +271,92 @@ class Conv_layer:
             },
             "optional": {
                 "layer": ("LAYER",),
+                'res': ("RES",),
+                "res_type": (
+                    ['add', 'concat-dim=0', 'concat-dim=1', 'concat-dim=2', 'concat-dim=3', 'Mul', 'div', 'sub'],),
             }
         }
 
-    RETURN_TYPES = ("LAYER",)
-    RETURN_NAMES = ('LAYER',)
+    RETURN_TYPES = ("LAYER", 'RES',)
+    RETURN_NAMES = ('LAYER', 'res',)
     FUNCTION = "init_Conv_layer"
     OUTPUT_NODE = True
     CATEGORY = "Build and train your network"
 
-    def init_Conv_layer(self, layer=None, in_channels=10, out_channels=10, kernel_size=3, padding=0, stride=1):
-        if isinstance(layer, nn.ModuleList):
+    # def init_Conv_layer(self, layer=None, in_channels=10, out_channels=10, kernel_size=3, padding=0, stride=1):
+    #     if isinstance(layer, nn.ModuleList):
+    #         layer_a = copy.deepcopy(layer)
+    #         del layer
+    #         layer_a.append(
+    #             nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size, padding=padding,
+    #                       stride=stride))
+    #         layer = copy.deepcopy(layer_a)
+    #     else:
+    #         layer = nn.ModuleList()
+    #         layer.append(
+    #             nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size, padding=padding,
+    #                       stride=stride))
+    #     return (layer,)
+
+    def init_Conv_layer(self, in_channels=10, out_channels=10, kernel_size=3, padding=0, stride=1, layer=None, res=None,
+                        res_type=None):
+        if layer is None and res is None:
+            layer_ = nn.ModuleList()
+            layer_.append(
+                nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size, padding=padding,
+                          stride=stride))
+            rt_res = []
+            layer = [layer_, rt_res]
+            return (layer, [len(layer[0]) - 1],)
+
+        if layer is not None and res is None:
             layer_a = copy.deepcopy(layer)
             del layer
-            layer_a.append(
+            layer_a[0].append(
                 nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size, padding=padding,
                           stride=stride))
             layer = copy.deepcopy(layer_a)
-        else:
-            layer = nn.ModuleList()
-            layer.append(
+            del layer_a
+            return (layer, [len(layer[0]) - 1],)
+
+        if res is not None and layer is not None:
+            layer_a = copy.deepcopy(layer)
+            del layer
+            layer_a[0].append(
                 nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size, padding=padding,
                           stride=stride))
-        return (layer,)
+
+            if len(res) <= 1:
+                layer_a[1].append((res[0], len(layer_a[0]) - 1, res_type))
+            else:
+                if isinstance(res, tuple):
+                    for i in res:
+                        layer_a[1].append((i[0], len(layer_a[0]) - 1, i[2], i[1]))
+                else:
+                    layer_a[1].append((res[0], len(layer_a[0]) - 1, res_type, res[1]))
+            layer = copy.deepcopy(layer_a)
+            del layer_a
+            return (layer, [(len(layer[0]) - 1), ],)
+
+        if layer is None and res is not None:
+            if len(res) <= 1:
+                res_layer = nn.ModuleList()
+                res_layer.append(nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size,
+                                           padding=padding,
+                                           stride=stride))
+                res_a = copy.deepcopy(res)
+                del res
+                res_a.append(res_layer)
+                res_a.append(res_type)
+                res = copy.deepcopy(res_a)
+                del res_a
+            else:
+                res_a = copy.deepcopy(res)
+                del res
+                res_a[1].append(nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size,
+                                          padding=padding,
+                                          stride=stride))
+                res_a[-1] = res_type
+                res = copy.deepcopy(res_a)
+                del res_a
+            return (layer, res,)

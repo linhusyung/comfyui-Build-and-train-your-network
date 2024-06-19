@@ -65,18 +65,18 @@ class net(pl.LightningModule):
                             out -= res_out
 
             outputs.append(out)
-        return outputs[-1]
+        return outputs[-1], outputs
 
     def training_step(self, batch, batch_idx):
         data, label = batch
-        out = self(data)
+        out, out_list = self(data)
         loss = self.CEB(out, label)
         self.log('train_loss', loss, prog_bar=True)
         return loss
 
     def validation_step(self, batch, batch_idx):
         data, label = batch
-        out = self(data)
+        out, out_list = self(data)
         loss = self.CEB(out, label)
         self.log('val_loss', loss, prog_bar=True)
         return loss
