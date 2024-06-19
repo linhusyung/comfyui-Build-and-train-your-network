@@ -53,7 +53,10 @@ class linear_layer():
             else:
                 if isinstance(res, tuple):
                     for i in res:
-                        layer_a[1].append((i[0], len(layer_a[0]) - 1, i[2], i[1]))
+                        if len(i) <= 1:
+                            layer_a[1].append((i[0], len(layer_a[0]) - 1, res_type, None))
+                        else:
+                            layer_a[1].append((i[0], len(layer_a[0]) - 1, i[2], i[1]))
                 else:
                     layer_a[1].append((res[0], len(layer_a[0]) - 1, res_type, res[1]))
             layer = copy.deepcopy(layer_a)
@@ -138,7 +141,10 @@ class activation_function():
             else:
                 if isinstance(res, tuple):
                     for i in res:
-                        layer_a[1].append((i[0], len(layer_a[0]) - 1, i[2], i[1]))
+                        if len(i) <= 1:
+                            layer_a[1].append((i[0], len(layer_a[0]) - 1, res_type, None))
+                        else:
+                            layer_a[1].append((i[0], len(layer_a[0]) - 1, i[2], i[1]))
                 else:
                     layer_a[1].append((res[0], len(layer_a[0]) - 1, res_type, res[1]))
             layer = copy.deepcopy(layer_a)
@@ -232,7 +238,10 @@ class view_layer:
             else:
                 if isinstance(res, tuple):
                     for i in res:
-                        layer_a[1].append((i[0], len(layer_a[0]) - 1, i[2], i[1]))
+                        if len(i) <= 1:
+                            layer_a[1].append((i[0], len(layer_a[0]) - 1, res_type, None))
+                        else:
+                            layer_a[1].append((i[0], len(layer_a[0]) - 1, i[2], i[1]))
                 else:
                     layer_a[1].append((res[0], len(layer_a[0]) - 1, res_type, res[1]))
             layer = copy.deepcopy(layer_a)
@@ -331,7 +340,10 @@ class Conv_layer:
             else:
                 if isinstance(res, tuple):
                     for i in res:
-                        layer_a[1].append((i[0], len(layer_a[0]) - 1, i[2], i[1]))
+                        if len(i) <= 1:
+                            layer_a[1].append((i[0], len(layer_a[0]) - 1, res_type, None))
+                        else:
+                            layer_a[1].append((i[0], len(layer_a[0]) - 1, i[2], i[1]))
                 else:
                     layer_a[1].append((res[0], len(layer_a[0]) - 1, res_type, res[1]))
             layer = copy.deepcopy(layer_a)

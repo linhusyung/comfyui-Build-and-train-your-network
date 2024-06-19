@@ -17,17 +17,25 @@ class net(pl.LightningModule):
         self.BCE = nn.BCELoss()
 
     def forward(self, x):
-        print(self.res_seq)
+        rt_res_out = []
         outputs = [x]
         for i, layer in enumerate(self.layer):
             out = layer(outputs[-1])
 
-            for res in self.res_seq:
+            for idx, res in enumerate(self.res_seq):
                 if i == res[1]:
                     if len(res) >= 4:
-                        for k in res[3]:
-                            res_out = k(outputs[res[0]])
-                            outputs[res[0]] = res_out
+                        cache = outputs[res[0]]
+                        res_out_cecha = []
+                        if res[3] is None:
+                            res_out = outputs[res[0]]
+                            res_out_cecha.append(res_out)
+                        else:
+                            for k in res[3]:
+                                res_out = k(cache)
+                                cache = res_out
+                                res_out_cecha.append(res_out)
+                        rt_res_out.append(res_out_cecha)
                         if res[2] == 'add':
                             out += res_out
                         if res[2] == 'concat-dim=0':
@@ -46,7 +54,6 @@ class net(pl.LightningModule):
                             out -= res_out
                     else:
                         res_out = outputs[res[0]]
-                        # out += outputs[res[0]]
                         if res[2] == 'add':
                             out += res_out
                         if res[2] == 'concat-dim=0':
@@ -65,7 +72,7 @@ class net(pl.LightningModule):
                             out -= res_out
 
             outputs.append(out)
-        return outputs[-1], outputs
+        return outputs[-1], (outputs, rt_res_out)
 
     def training_step(self, batch, batch_idx):
         data, label = batch

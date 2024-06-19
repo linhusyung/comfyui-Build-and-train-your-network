@@ -27,14 +27,16 @@ class net(nn.Module):
 
 
 if __name__ == '__main__':
-    layer = ModuleList()
-    layer.append(nn.Linear(10, 10))
-    layer.append(nn.Linear(10, 10))
-    layer.append(nn.Linear(10, 10))
-    layer.append(nn.Linear(10, 10))
-    layer.append(nn.Linear(20, 10))
-    layer.append(nn.Linear(10, 10))
-    layer = (layer, [(0, 3)])
-    net = net(layer)
-    x = torch.rand(([1, 10]))
-    print(net(x).shape)
+    # layer = ModuleList()
+    # layer.append(nn.Linear(10, 10))
+    # layer.append(nn.Linear(10, 10))
+    # layer.append(nn.Linear(10, 10))
+    # layer.append(nn.Linear(10, 10))
+    # layer.append(nn.Linear(20, 10))
+    # layer.append(nn.Linear(10, 10))
+    # layer = (layer, [(0, 3)])
+    # net = net(layer)
+    # x = torch.rand(([1, 10]))
+    # print(net(x).shape)
+    out_list = [(2),[(torch.rand([1,2,3]),torch.rand([1,2,3])),((torch.rand([1,2,3]),torch.rand([1,3])))]]
+    print( [y.shape for x in out_list[1] for y in x])

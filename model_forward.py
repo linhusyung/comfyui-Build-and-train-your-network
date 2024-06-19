@@ -27,7 +27,7 @@ class forward_test:
                 return (out.view(out.size(0), -1).shape, out_list)
             return (out.view(out.size(0), -1), out_list)
         if return_shape:
-            return (out.shape, [x.shape for x in out_list])
+            return (out.shape, ([x.shape for x in out_list[0]], [y.shape for x in out_list[1] for y in x]))
         return (out, out_list)
 
 
