@@ -27,9 +27,42 @@ class net(pl.LightningModule):
                     if len(res) >= 4:
                         for k in res[3]:
                             res_out = k(outputs[res[0]])
+                            outputs[res[0]] = res_out
+                        if res[2] == 'add':
                             out += res_out
+                        if res[2] == 'concat-dim=0':
+                            out = torch.cat((out, res_out), dim=0)
+                        if res[2] == 'concat-dim=1':
+                            out = torch.cat((out, res_out), dim=1)
+                        if res[2] == 'concat-dim=2':
+                            out = torch.cat((out, res_out), dim=2)
+                        if res[2] == 'concat-dim=3':
+                            out = torch.cat((out, res_out), dim=3)
+                        if res[2] == 'Mul':
+                            out *= res_out
+                        if res[2] == 'div':
+                            out /= res_out
+                        if res[2] == 'sub':
+                            out -= res_out
                     else:
-                        out += outputs[res[0]]
+                        res_out = outputs[res[0]]
+                        # out += outputs[res[0]]
+                        if res[2] == 'add':
+                            out += res_out
+                        if res[2] == 'concat-dim=0':
+                            out = torch.cat((out, res_out), dim=0)
+                        if res[2] == 'concat-dim=1':
+                            out = torch.cat((out, res_out), dim=1)
+                        if res[2] == 'concat-dim=2':
+                            out = torch.cat((out, res_out), dim=2)
+                        if res[2] == 'concat-dim=3':
+                            out = torch.cat((out, res_out), dim=3)
+                        if res[2] == 'Mul':
+                            out *= res_out
+                        if res[2] == 'div':
+                            out /= res_out
+                        if res[2] == 'sub':
+                            out -= res_out
 
             outputs.append(out)
         return outputs[-1]
@@ -88,7 +121,6 @@ class create_model():
     CATEGORY = "Build and train your network"
 
     def create_init_model(self, layer):
-
         model = net(layer)
         return (model,)
 

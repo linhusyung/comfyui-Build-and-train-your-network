@@ -5,7 +5,7 @@ import time
 import os
 
 
-class linear_layer:
+class linear_layer():
     @classmethod
     def INPUT_TYPES(s):
         return {
@@ -17,7 +17,7 @@ class linear_layer:
                 "layer": ("LAYER",),
                 'res': ("RES",),
                 "res_type": (
-                    ['add', 'concat-dim=-1', 'concat-dim=1', 'concat-dim=2', 'concat-dim=3', 'Mul', 'div', 'sub'],),
+                    ['add', 'concat-dim=0', 'concat-dim=1', 'concat-dim=2', 'concat-dim=3', 'Mul', 'div', 'sub'],),
             }
         }
 
@@ -53,7 +53,7 @@ class linear_layer:
             else:
                 if isinstance(res, tuple):
                     for i in res:
-                        layer_a[1].append((i[0], len(layer_a[0]) - 1, res_type, i[1]))
+                        layer_a[1].append((i[0], len(layer_a[0]) - 1, i[2], i[1]))
                 else:
                     layer_a[1].append((res[0], len(layer_a[0]) - 1, res_type, res[1]))
             layer = copy.deepcopy(layer_a)
@@ -67,12 +67,98 @@ class linear_layer:
                 res_a = copy.deepcopy(res)
                 del res
                 res_a.append(res_layer)
+                res_a.append(res_type)
                 res = copy.deepcopy(res_a)
                 del res_a
             else:
                 res_a = copy.deepcopy(res)
                 del res
                 res_a[1].append(nn.Linear(in_features=in_features, out_features=out_features))
+                res_a[-1] = res_type
+                res = copy.deepcopy(res_a)
+                del res_a
+            return (layer, res,)
+
+
+class activation_function():
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "act_func_type": (
+                    ['ReLU', 'Sigmoid', 'Tanh',
+                     'Softmax', 'LeakyReLU'],),
+            },
+            "optional": {
+                "layer": ("LAYER",),
+                'res': ("RES",),
+                "res_type": (
+                    ['add', 'concat-dim=0', 'concat-dim=1', 'concat-dim=2', 'concat-dim=3', 'Mul', 'div', 'sub'],),
+            }
+        }
+
+    RETURN_TYPES = ("LAYER", 'RES',)
+    RETURN_NAMES = ('LAYER', 'res',)
+    FUNCTION = "init_layer"
+    OUTPUT_NODE = True
+    CATEGORY = "Build and train your network"
+
+    def __init__(self):
+        self.Chart = {
+            'ReLU': nn.ReLU(),
+            'Sigmoid': nn.Sigmoid(),
+            'Tanh': nn.Tanh(),
+            'Softmax': nn.Softmax(dim=-1),
+            'LeakyReLU': nn.LeakyReLU(),
+        }
+
+    def init_layer(self, act_func_type, layer=None, res=None, res_type=None):
+        if layer is None and res is None:
+            layer_ = nn.ModuleList()
+            layer_.append(self.Chart[act_func_type])
+            rt_res = []
+            layer = [layer_, rt_res]
+            return (layer, [len(layer[0]) - 1],)
+
+        if layer is not None and res is None:
+            layer_a = copy.deepcopy(layer)
+            del layer
+            layer_a[0].append(self.Chart[act_func_type])
+            layer = copy.deepcopy(layer_a)
+            del layer_a
+            return (layer, [len(layer[0]) - 1],)
+
+        if res is not None and layer is not None:
+            layer_a = copy.deepcopy(layer)
+            del layer
+            layer_a[0].append(self.Chart[act_func_type])
+
+            if len(res) <= 1:
+                layer_a[1].append((res[0], len(layer_a[0]) - 1, res_type))
+            else:
+                if isinstance(res, tuple):
+                    for i in res:
+                        layer_a[1].append((i[0], len(layer_a[0]) - 1, i[2], i[1]))
+                else:
+                    layer_a[1].append((res[0], len(layer_a[0]) - 1, res_type, res[1]))
+            layer = copy.deepcopy(layer_a)
+            del layer_a
+            return (layer, [(len(layer[0]) - 1), ],)
+
+        if layer is None and res is not None:
+            if len(res) <= 1:
+                res_layer = nn.ModuleList()
+                res_layer.append(self.Chart[act_func_type])
+                res_a = copy.deepcopy(res)
+                del res
+                res_a.append(res_layer)
+                res = copy.deepcopy(res_a)
+                del res_a
+            else:
+                res_a = copy.deepcopy(res)
+                del res
+                res_a[1].append(self.Chart[act_func_type])
+                res_a[-1] = res_type
                 res = copy.deepcopy(res_a)
                 del res_a
             return (layer, res,)
@@ -153,45 +239,4 @@ class Conv_layer:
             layer.append(
                 nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size, padding=padding,
                           stride=stride))
-        return (layer,)
-
-
-class activation_function:
-    @classmethod
-    def INPUT_TYPES(s):
-        return {
-            "required": {
-                "act_func_type": (
-                    ['ReLU', 'Sigmoid', 'Tanh',
-                     'Softmax', 'LeakyReLU'],),
-            },
-            "optional": {
-                "layer": ("LAYER",),
-            }
-        }
-
-    RETURN_TYPES = ("LAYER",)
-    RETURN_NAMES = ('layer',)
-    FUNCTION = "init_layer"
-    OUTPUT_NODE = True
-    CATEGORY = "Build and train your network"
-
-    def __init__(self):
-        self.Chart = {
-            'ReLU': nn.ReLU(),
-            'Sigmoid': nn.Sigmoid(),
-            'Tanh': nn.Tanh(),
-            'Softmax': nn.Softmax(dim=-1),
-            'LeakyReLU': nn.LeakyReLU(),
-        }
-
-    def init_layer(self, act_func_type, layer=None, ):
-        if isinstance(layer, nn.ModuleList):
-            layer_a = copy.deepcopy(layer)
-            del layer
-            layer_a.append(self.Chart[act_func_type])
-            layer = copy.deepcopy(layer_a)
-        else:
-            layer = nn.ModuleList()
-            layer.append(self.Chart[act_func_type])
         return (layer,)

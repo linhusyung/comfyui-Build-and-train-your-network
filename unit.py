@@ -7,6 +7,8 @@ class res_connect:
                 "res_2": ("RES",),
             },
             "optional": {
+                "res_1": ("RES",),
+                "res_2": ("RES",),
             }
         }
 
