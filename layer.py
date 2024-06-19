@@ -17,8 +17,7 @@ class linear_layer:
                 "layer": ("LAYER",),
                 'res': ("RES",),
                 "res_type": (
-                    ['add', 'concat', 'Mul', 'div', 'sub'],),
-
+                    ['add', 'concat-dim=-1', 'concat-dim=1', 'concat-dim=2', 'concat-dim=3', 'Mul', 'div', 'sub'],),
             }
         }
 
@@ -59,7 +58,7 @@ class linear_layer:
                     layer_a[1].append((res[0], len(layer_a[0]) - 1, res_type, res[1]))
             layer = copy.deepcopy(layer_a)
             del layer_a
-            return (layer, [(len(layer[0]) - 1),],)
+            return (layer, [(len(layer[0]) - 1), ],)
 
         if layer is None and res is not None:
             if len(res) <= 1:

@@ -17,17 +17,22 @@ class net(pl.LightningModule):
         self.BCE = nn.BCELoss()
 
     def forward(self, x):
+        print(self.res_seq)
         outputs = [x]
         for i, layer in enumerate(self.layer):
             out = layer(outputs[-1])
 
             for res in self.res_seq:
-                if res[1] == i:
-                    out += outputs[res[0]]
-                    # out = torch.cat((out, outputs[res[0]]), dim=-1)
+                if i == res[1]:
+                    if len(res) >= 4:
+                        for k in res[3]:
+                            res_out = k(outputs[res[0]])
+                            out += res_out
+                    else:
+                        out += outputs[res[0]]
+
             outputs.append(out)
         return outputs[-1]
-
 
     def training_step(self, batch, batch_idx):
         data, label = batch
@@ -83,6 +88,7 @@ class create_model():
     CATEGORY = "Build and train your network"
 
     def create_init_model(self, layer):
+
         model = net(layer)
         return (model,)
 
