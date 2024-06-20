@@ -3,6 +3,7 @@ from torch import nn
 import copy
 import time
 import os
+from .pre_train_model import *
 
 
 class linear_layer():
@@ -584,6 +585,150 @@ class pooling_layer:
                 if mode == 'AvgPool2d':
                     res_a[1].append(
                         nn.AvgPool2d(eval(normalized_shape)))
+                res_a[-1] = res_type
+                res = copy.deepcopy(res_a)
+                del res_a
+            return (layer, res,)
+
+
+class pre_train_layer:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "mode": (
+                    ['vgg_16', 'resnet_50', 'inception_v3', 'efficientnet_b0'],),
+                "use_weights": ("BOOLEAN", {"default": True}),
+                "freeze_weights": ("BOOLEAN", {"default": True}),
+            },
+            "optional": {
+                "layer": ("LAYER",),
+                'res': ("RES",),
+                "res_type": (
+                    ['add', 'concat-dim=0', 'concat-dim=1', 'concat-dim=2', 'concat-dim=3', 'Mul', 'div', 'sub'],),
+            }
+        }
+
+    RETURN_TYPES = ("LAYER", 'RES',)
+    RETURN_NAMES = ('LAYER', 'res',)
+    FUNCTION = "init_Normalization_layer"
+    OUTPUT_NODE = True
+    CATEGORY = "Build and train your network"
+
+    def init_Normalization_layer(self, mode=None, use_weights=True, freeze_weights=True, layer=None,
+                                 res=None,
+                                 res_type=None):
+        if layer is None and res is None:
+            layer_ = nn.ModuleList()
+            if mode == 'vgg_16':
+                layer_.append(
+                    vgg_16(use_weights, freeze_weights))
+            if mode == 'resnet_50':
+                layer_.append(
+                    resnet_50(use_weights, freeze_weights))
+            if mode == 'inception_v3':
+                layer_.append(
+                    inception_v3(use_weights, freeze_weights))
+            if mode == 'efficientnet_b0':
+                layer_.append(
+                    efficientnet_b0(use_weights, freeze_weights))
+
+            rt_res = []
+            layer = [layer_, rt_res]
+            return (layer, [len(layer[0]) - 1],)
+
+        if layer is not None and res is None:
+            layer_a = copy.deepcopy(layer)
+            del layer
+
+            if mode == 'vgg_16':
+                layer_a[0].append(
+                    vgg_16(use_weights, freeze_weights))
+            if mode == 'resnet_50':
+                layer_a[0].append(
+                    resnet_50(use_weights, freeze_weights))
+            if mode == 'inception_v3':
+                layer_a[0].append(
+                    inception_v3(use_weights, freeze_weights))
+            if mode == 'efficientnet_b0':
+                layer_a[0].append(
+                    efficientnet_b0(use_weights, freeze_weights))
+
+            layer = copy.deepcopy(layer_a)
+            del layer_a
+            return (layer, [len(layer[0]) - 1],)
+
+        if res is not None and layer is not None:
+            layer_a = copy.deepcopy(layer)
+            del layer
+            if mode == 'vgg_16':
+                layer_a[0].append(
+                    vgg_16(use_weights, freeze_weights))
+            if mode == 'resnet_50':
+                layer_a[0].append(
+                    resnet_50(use_weights, freeze_weights))
+            if mode == 'inception_v3':
+                layer_a[0].append(
+                    inception_v3(use_weights, freeze_weights))
+            if mode == 'efficientnet_b0':
+                layer_a[0].append(
+                    efficientnet_b0(use_weights, freeze_weights))
+
+            if len(res) <= 1:
+                layer_a[1].append((res[0], len(layer_a[0]) - 1, res_type))
+            else:
+                if isinstance(res, tuple):
+                    for i in res:
+                        if len(i) <= 1:
+                            layer_a[1].append((i[0], len(layer_a[0]) - 1, res_type, None))
+                        else:
+                            layer_a[1].append((i[0], len(layer_a[0]) - 1, i[2], i[1]))
+                else:
+                    layer_a[1].append((res[0], len(layer_a[0]) - 1, res_type, res[1]))
+            layer = copy.deepcopy(layer_a)
+            del layer_a
+            return (layer, [(len(layer[0]) - 1), ],)
+
+        if layer is None and res is not None:
+            if len(res) <= 1:
+                res_layer = nn.ModuleList()
+
+                if mode == 'vgg_16':
+                    res_layer.append(
+                        vgg_16(use_weights, freeze_weights))
+                if mode == 'resnet_50':
+                    res_layer.append(
+                        resnet_50(use_weights, freeze_weights))
+                if mode == 'inception_v3':
+                    res_layer.append(
+                        inception_v3(use_weights, freeze_weights))
+                if mode == 'efficientnet_b0':
+                    res_layer.append(
+                        efficientnet_b0(use_weights, freeze_weights))
+
+                res_a = copy.deepcopy(res)
+                del res
+                res_a.append(res_layer)
+                res_a.append(res_type)
+                res = copy.deepcopy(res_a)
+                del res_a
+            else:
+                res_a = copy.deepcopy(res)
+                del res
+
+                if mode == 'vgg_16':
+                    res_a[1].append(
+                        vgg_16(use_weights, freeze_weights))
+                if mode == 'resnet_50':
+                    res_a[1].append(
+                        resnet_50(use_weights, freeze_weights))
+                if mode == 'inception_v3':
+                    res_a[1].append(
+                        inception_v3(use_weights, freeze_weights))
+                if mode == 'efficientnet_b0':
+                    res_a[1].append(
+                        efficientnet_b0(use_weights, freeze_weights))
+
                 res_a[-1] = res_type
                 res = copy.deepcopy(res_a)
                 del res_a

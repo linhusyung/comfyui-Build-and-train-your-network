@@ -4,20 +4,32 @@ from torch import nn
 
 
 class vgg_16(nn.Module):
-    def __init__(self, use_weights):
+    def __init__(self, use_weights: bool, freeze: bool):
         super().__init__()
         if use_weights:
             self.vgg16 = models.vgg16(weights='IMAGENET1K_V1')
         else:
             self.vgg16 = models.vgg16(weights=None)
+        if freeze:
+            self.freeze()
+        else:
+            self.unfreeze()
 
     def forward(self, x):
         out = self.vgg16.features(x)
         return out
+    def freeze(self):
+        for param in self.vgg16.parameters():
+            param.requires_grad = False
+
+    def unfreeze(self):
+        for param in self.vgg16.parameters():
+            param.requires_grad = True
+
 
 
 class resnet_50(nn.Module):
-    def __init__(self, use_weights):
+    def __init__(self, use_weights: bool, freeze: bool):
         super().__init__()
         if use_weights:
             self.resnet50 = models.resnet50(weights='IMAGENET1K_V1')
@@ -33,18 +45,29 @@ class resnet_50(nn.Module):
             self.resnet50.layer3,
             self.resnet50.layer4,
         )
+        if freeze:
+            self.freeze()
+        else:
+            self.unfreeze()
 
     def forward(self, x):
         x = self.features(x)
         return x
 
+    def freeze(self):
+        for param in self.features.parameters():
+            param.requires_grad = False
+
+    def unfreeze(self):
+        for param in self.features.parameters():
+            param.requires_grad = True
+
 
 class inception_v3(nn.Module):
-    def __init__(self, use_weights):
+    def __init__(self, use_weights: bool, freeze: bool):
         super().__init__()
         if use_weights:
             self.inception_v3 = models.inception_v3(weights='IMAGENET1K_V1')
-            print(1)
         else:
             self.inception_v3 = models.inception_v3(weights=None)
 
@@ -68,40 +91,45 @@ class inception_v3(nn.Module):
             self.inception_v3.Mixed_7b,
             self.inception_v3.Mixed_7c,
         )
+        if freeze:
+            self.freeze()
+        else:
+            self.unfreeze()
 
     def forward(self, x):
         x = self.features(x)
         return x
 
+    def freeze(self):
+        for param in self.features.parameters():
+            param.requires_grad = False
+
+    def unfreeze(self):
+        for param in self.features.parameters():
+            param.requires_grad = True
+
 
 class efficientnet_b0(nn.Module):
-    def __init__(self, use_weights):
+    def __init__(self, use_weights: bool, freeze: bool):
         super().__init__()
         if use_weights:
             self.efficientnet_b0 = models.efficientnet_b0(weights='IMAGENET1K_V1')
         else:
             self.efficientnet_b0 = models.efficientnet_b0(weights=None)
 
+        if freeze:
+            self.freeze()
+        else:
+            self.unfreeze()
+
     def forward(self, x):
         out = self.efficientnet_b0.features(x)
         return out
 
+    def freeze(self):
+        for param in self.efficientnet_b0.parameters():
+            param.requires_grad = False
 
-if __name__ == '__main__':
-    x = torch.rand([1, 3, 512, 46])
-
-    # model = resnet_50(True)
-    # output = model(x)
-    # print(output.shape)
-
-    vgg_16 = vgg_16(True)
-    out = vgg_16(x)
-    print(out.shape)
-    out = nn.AdaptiveAvgPool2d([7,7])(out)
-    print(out.shape)
-
-    # inception_v3 = inception_v3(True)
-    # print(inception_v3(x).shape)
-
-    # efficientnet_b0 = efficientnet_b0(True)
-    # print(efficientnet_b0(x).shape)
+    def unfreeze(self):
+        for param in self.efficientnet_b0.parameters():
+            param.requires_grad = True

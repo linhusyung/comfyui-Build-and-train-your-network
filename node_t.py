@@ -17,6 +17,7 @@ NODE_CLASS_MAPPINGS = {
     'res_connect': res_connect,
     'Normalization_layer': Normalization_layer,
     'pooling_layer': pooling_layer,
+    'pre_train_layer': pre_train_layer,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -32,5 +33,6 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     'view_layer': 'view layer',
     'res_connect': 'res connect',
     'Normalization_layer': 'Normalization layer',
-    'pooling_layer': 'pooling_layer',
+    'pooling_layer': 'pooling layer',
+    'pre_train_layer': 'pre train layer',
 }
