@@ -467,3 +467,124 @@ class Normalization_layer:
                 res = copy.deepcopy(res_a)
                 del res_a
             return (layer, res,)
+
+
+class pooling_layer:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "mode": (
+                    ['adaptive_avgpool', 'MaxPool2d', 'AvgPool2d'],),
+                "normalized_shape": ("STRING", {"default": "[3,3]"})
+            },
+            "optional": {
+                "layer": ("LAYER",),
+                'res': ("RES",),
+                "res_type": (
+                    ['add', 'concat-dim=0', 'concat-dim=1', 'concat-dim=2', 'concat-dim=3', 'Mul', 'div', 'sub'],),
+            }
+        }
+
+    RETURN_TYPES = ("LAYER", 'RES',)
+    RETURN_NAMES = ('LAYER', 'res',)
+    FUNCTION = "init_Normalization_layer"
+    OUTPUT_NODE = True
+    CATEGORY = "Build and train your network"
+
+    def init_Normalization_layer(self, mode=None, normalized_shape=None, layer=None,
+                                 res=None,
+                                 res_type=None):
+        if layer is None and res is None:
+            layer_ = nn.ModuleList()
+            if mode == 'adaptive_avgpool':
+                layer_.append(
+                    nn.AdaptiveAvgPool2d(eval(normalized_shape)))
+            if mode == 'MaxPool2d':
+                layer_.append(
+                    nn.MaxPool2d(eval(normalized_shape)))
+            if mode == 'AvgPool2d':
+                layer_.append(
+                    nn.AvgPool2d(eval(normalized_shape)))
+            rt_res = []
+            layer = [layer_, rt_res]
+            return (layer, [len(layer[0]) - 1],)
+
+        if layer is not None and res is None:
+            layer_a = copy.deepcopy(layer)
+            del layer
+            if mode == 'adaptive_avgpool':
+                layer_a[0].append(
+                    nn.AdaptiveAvgPool2d(eval(normalized_shape)))
+            if mode == 'MaxPool2d':
+                layer_a[0].append(
+                    nn.MaxPool2d(eval(normalized_shape)))
+            if mode == 'AvgPool2d':
+                layer_a[0].append(
+                    nn.AvgPool2d(eval(normalized_shape)))
+            layer = copy.deepcopy(layer_a)
+            del layer_a
+            return (layer, [len(layer[0]) - 1],)
+
+        if res is not None and layer is not None:
+            layer_a = copy.deepcopy(layer)
+            del layer
+            if mode == 'adaptive_avgpool':
+                layer_a[0].append(
+                    nn.AdaptiveAvgPool2d(eval(normalized_shape)))
+            if mode == 'MaxPool2d':
+                layer_a[0].append(
+                    nn.MaxPool2d(eval(normalized_shape)))
+            if mode == 'AvgPool2d':
+                layer_a[0].append(
+                    nn.AvgPool2d(eval(normalized_shape)))
+
+            if len(res) <= 1:
+                layer_a[1].append((res[0], len(layer_a[0]) - 1, res_type))
+            else:
+                if isinstance(res, tuple):
+                    for i in res:
+                        if len(i) <= 1:
+                            layer_a[1].append((i[0], len(layer_a[0]) - 1, res_type, None))
+                        else:
+                            layer_a[1].append((i[0], len(layer_a[0]) - 1, i[2], i[1]))
+                else:
+                    layer_a[1].append((res[0], len(layer_a[0]) - 1, res_type, res[1]))
+            layer = copy.deepcopy(layer_a)
+            del layer_a
+            return (layer, [(len(layer[0]) - 1), ],)
+
+        if layer is None and res is not None:
+            if len(res) <= 1:
+                res_layer = nn.ModuleList()
+                if mode == 'adaptive_avgpool':
+                    res_layer.append(
+                        nn.AdaptiveAvgPool2d(eval(normalized_shape)))
+                if mode == 'MaxPool2d':
+                    res_layer.append(
+                        nn.MaxPool2d(eval(normalized_shape)))
+                if mode == 'AvgPool2d':
+                    res_layer.append(
+                        nn.AvgPool2d(eval(normalized_shape)))
+                res_a = copy.deepcopy(res)
+                del res
+                res_a.append(res_layer)
+                res_a.append(res_type)
+                res = copy.deepcopy(res_a)
+                del res_a
+            else:
+                res_a = copy.deepcopy(res)
+                del res
+                if mode == 'adaptive_avgpool':
+                    res_a[1].append(
+                        nn.AdaptiveAvgPool2d(eval(normalized_shape)))
+                if mode == 'MaxPool2d':
+                    res_a[1].append(
+                        nn.MaxPool2d(eval(normalized_shape)))
+                if mode == 'AvgPool2d':
+                    res_a[1].append(
+                        nn.AvgPool2d(eval(normalized_shape)))
+                res_a[-1] = res_type
+                res = copy.deepcopy(res_a)
+                del res_a
+            return (layer, res,)

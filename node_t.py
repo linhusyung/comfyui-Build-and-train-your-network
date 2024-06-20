@@ -15,7 +15,8 @@ NODE_CLASS_MAPPINGS = {
     'show_dimensions': show_dimensions,
     'view_layer': view_layer,
     'res_connect': res_connect,
-    'Normalization_layer': Normalization_layer
+    'Normalization_layer': Normalization_layer,
+    'pooling_layer': pooling_layer,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -30,5 +31,6 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     'show_dimensions': 'show dimensions',
     'view_layer': 'view layer',
     'res_connect': 'res connect',
-    'Normalization_layer': 'Normalization layer'
+    'Normalization_layer': 'Normalization layer',
+    'pooling_layer': 'pooling_layer',
 }
