@@ -14,7 +14,8 @@ NODE_CLASS_MAPPINGS = {
     'create_training_task': create_training_task,
     'show_dimensions': show_dimensions,
     'view_layer': view_layer,
-    'res_connect': res_connect
+    'res_connect': res_connect,
+    'Normalization_layer': Normalization_layer
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -28,5 +29,6 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     'create_training_task': 'training',
     'show_dimensions': 'show dimensions',
     'view_layer': 'view layer',
-    'res_connect': 'res connect'
+    'res_connect': 'res connect',
+    'Normalization_layer': 'Normalization layer'
 }
