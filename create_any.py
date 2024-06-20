@@ -142,6 +142,7 @@ class create_dataset:
                 'train_data_path': ("STRING", {
                     "default": "D:/ComfyUI_windows_portable_nvidia_cu121_or_cpu/ComfyUI_windows_portable/ComfyUI/custom_nodes/comfyui_train/dataset/train"}),
                 "val_data": ("BOOLEAN", {"default": True}),
+                "number_of_image": ("INT", {"default": 0, "min": 0, "step": 1, }),
             },
             "optional": {
                 "resize_w_h": ("STRING", {"default": "[512, 512]"}),
@@ -152,13 +153,13 @@ class create_dataset:
             }
         }
 
-    RETURN_TYPES = ("DATESET", "DATESET", 'TENSOR')
-    RETURN_NAMES = ('train dataset', 'val dataset', 'test data')
+    RETURN_TYPES = ("DATESET", "DATESET", 'TENSOR', 'TENSOR', 'IMAGE',)
+    RETURN_NAMES = ('train dataset', 'val dataset', 'test data', 'test label', 'image show')
     FUNCTION = "create_init_dataset"
     OUTPUT_NODE = True
     CATEGORY = "Build and train your network"
 
-    def create_init_dataset(self, resize, normalize, train_data_path, resize_w_h='[512, 512]',
+    def create_init_dataset(self, resize, normalize, train_data_path, number_of_image, resize_w_h='[512, 512]',
                             mean='[0.485, 0.456, 0.406]', std='[0.229, 0.224, 0.225]', val_data=True,
                             val_data_path=None):
         resize_transform = transforms.Resize(eval(resize_w_h)) if resize else None
@@ -176,8 +177,10 @@ class create_dataset:
         train_dataset = datasets.ImageFolder(root=train_data_path, transform=transform)
         if val_data:
             val_dataset = datasets.ImageFolder(root=val_data_path, transform=transform)
-            return (train_dataset, val_dataset, train_dataset[0][0].unsqueeze(0))
-        return (train_dataset, None, train_dataset[0][0].unsqueeze(0))
+            return (train_dataset, val_dataset, train_dataset[0][0].unsqueeze(0), train_dataset[0][1],
+                    train_dataset[number_of_image][0].unsqueeze(0).permute(0, 2, 3, 1))
+        return (train_dataset, None, train_dataset[0][0].unsqueeze(0), train_dataset[0][1],
+                train_dataset[number_of_image][0].unsqueeze(0).permute(0, 2, 3, 1))
 
 
 class create_training_task:
@@ -187,6 +190,8 @@ class create_training_task:
             "required": {
                 "train_dataset": ("DATESET",),
                 "model": ("MODELS_CLASS",),
+                "accelerator": (
+                    ["cpu", "gpu", "tpu", "ipu", "hpu", "mps", "auto"],),
             },
             "optional": {
                 "val_dataset": ("DATESET",),
@@ -202,15 +207,15 @@ class create_training_task:
     OUTPUT_NODE = True
     CATEGORY = "Build and train your network"
 
-    def create_init_train(self, train_dataset, model, val_dataset=None, batch_size=8, epochs=100):
+    def create_init_train(self, train_dataset, model, accelerator='auto', val_dataset=None, batch_size=8, epochs=100):
         if val_dataset is None:
             train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-            trainer = Trainer(max_epochs=epochs, accelerator='auto', devices=1)
+            trainer = Trainer(max_epochs=epochs, accelerator=accelerator, devices=1)
             trainer.fit(model, train_dataloaders=train_dataloader)
         else:
             train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
             val_dataloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
-            trainer = Trainer(max_epochs=epochs, accelerator='auto', devices=1)
+            trainer = Trainer(max_epochs=epochs, accelerator=accelerator, devices=1)
             trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
             return (model,)
         return (model,)
