@@ -7,9 +7,9 @@ class vgg_16(nn.Module):
     def __init__(self, use_weights):
         super().__init__()
         if use_weights:
-            self.vgg16 = models.vgg16(weights='IMAGENET1K_V1')
+            self.vgg16 = models.vgg16(weights='IMAGENET1K_V1').features
         else:
-            self.vgg16 = models.vgg16(weights=None)
+            self.vgg16 = models.vgg16(weights=None).features
 
     def forward(self, x):
         out = self.vgg16.features(x)
@@ -78,9 +78,9 @@ class efficientnet_b0(nn.Module):
     def __init__(self, use_weights):
         super().__init__()
         if use_weights:
-            self.efficientnet_b0 = models.efficientnet_b0(weights='IMAGENET1K_V1')
+            self.efficientnet_b0 = models.efficientnet_b0(weights='IMAGENET1K_V1').features
         else:
-            self.efficientnet_b0 = models.efficientnet_b0(weights=None)
+            self.efficientnet_b0 = models.efficientnet_b0(weights=None).features
 
     def forward(self, x):
         out = self.efficientnet_b0.features(x)
