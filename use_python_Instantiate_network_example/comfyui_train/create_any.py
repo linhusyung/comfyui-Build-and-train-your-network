@@ -156,7 +156,7 @@ class create_model():
                 "save_serialization": ("BOOLEAN", {"default": True}),
             },
             "optional": {
-                "save_path": ("STRING", {"default": "D:/ComfyUI_windows_portable_nvidia_cu121_or_cpu/ComfyUI_windows_portable/ComfyUI/custom_nodes/comfyui_train/k.pkl"}),
+                "save_path": ("STRING", {"default": "D:/k.pkl"}),
             }
         }
 
@@ -166,7 +166,7 @@ class create_model():
     OUTPUT_NODE = True
     CATEGORY = "Build and train your network"
 
-    def create_init_model(self, layer, lr, loss, save_serialization=True, save_path=''):
+    def create_init_model(self, layer, lr, loss, save_serialization=True,save_path=''):
         if save_serialization:
             with open(save_path, 'wb') as f:
                 pickle.dump(layer, f)
@@ -247,8 +247,6 @@ class create_training_task:
                 "val_dataset": ("DATESET",),
                 "batch_size": ("INT", {"default": 8, "min": 1, "max": 0xffffffffffffffff, "step": 1, }),
                 "epochs": ("INT", {"default": 100, "min": 1, "max": 0xffffffffffffffff, "step": 1, }),
-                'save_log_path': ("STRING", {
-                    "default": "D:/ComfyUI_windows_portable_nvidia_cu121_or_cpu/ComfyUI_windows_portable/ComfyUI/custom_nodes/comfyui_train"}),
 
             }
         }
@@ -259,17 +257,17 @@ class create_training_task:
     OUTPUT_NODE = True
     CATEGORY = "Build and train your network"
 
-    def create_init_train(self, train_dataset, model, val_dataset=None, batch_size=8, epochs=100, save_log_path=''
+    def create_init_train(self, train_dataset, model, val_dataset=None, batch_size=8, epochs=100,
                           ):
         model.res_cuda()
         if val_dataset is None:
             train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-            trainer = Trainer(max_epochs=epochs, accelerator='auto', devices=1, default_root_dir=save_log_path)
+            trainer = Trainer(max_epochs=epochs, accelerator='auto', devices=1)
             trainer.fit(model, train_dataloaders=train_dataloader)
         else:
             train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
             val_dataloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
-            trainer = Trainer(max_epochs=epochs, accelerator='auto', devices=1, default_root_dir=save_log_path)
+            trainer = Trainer(max_epochs=epochs, accelerator='auto', devices=1)
             trainer.fit(model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
             return (model,)
         return (model,)
