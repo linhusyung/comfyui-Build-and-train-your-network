@@ -349,69 +349,69 @@ class PromptExecutor:
         self.status_messages = []
         self.add_message("execution_start", {"prompt_id": prompt_id}, broadcast=False)
 
-        with torch.inference_mode():
+        # with torch.inference_mode():
             # delete cached outputs if nodes don't exist for them
-            to_delete = []
-            for o in self.outputs:
-                if o not in prompt:
+        to_delete = []
+        for o in self.outputs:
+            if o not in prompt:
+                to_delete += [o]
+        for o in to_delete:
+            d = self.outputs.pop(o)
+            del d
+        to_delete = []
+        for o in self.object_storage:
+            if o[0] not in prompt:
+                to_delete += [o]
+            else:
+                p = prompt[o[0]]
+                if o[1] != p['class_type']:
                     to_delete += [o]
-            for o in to_delete:
-                d = self.outputs.pop(o)
-                del d
-            to_delete = []
-            for o in self.object_storage:
-                if o[0] not in prompt:
-                    to_delete += [o]
-                else:
-                    p = prompt[o[0]]
-                    if o[1] != p['class_type']:
-                        to_delete += [o]
-            for o in to_delete:
-                d = self.object_storage.pop(o)
+        for o in to_delete:
+            d = self.object_storage.pop(o)
+            del d
+
+        for x in prompt:
+            recursive_output_delete_if_changed(prompt, self.old_prompt, self.outputs, x)
+
+        current_outputs = set(self.outputs.keys())
+        for x in list(self.outputs_ui.keys()):
+            if x not in current_outputs:
+                d = self.outputs_ui.pop(x)
                 del d
 
-            for x in prompt:
-                recursive_output_delete_if_changed(prompt, self.old_prompt, self.outputs, x)
+        comfy.model_management.cleanup_models(keep_clone_weights_loaded=True)
+        self.add_message("execution_cached",
+                         {"nodes": list(current_outputs), "prompt_id": prompt_id},
+                         broadcast=False)
+        executed = set()
+        output_node_id = None
+        to_execute = []
 
-            current_outputs = set(self.outputs.keys())
-            for x in list(self.outputs_ui.keys()):
-                if x not in current_outputs:
-                    d = self.outputs_ui.pop(x)
-                    del d
+        for node_id in list(execute_outputs):
+            to_execute += [(0, node_id)]
 
-            comfy.model_management.cleanup_models(keep_clone_weights_loaded=True)
-            self.add_message("execution_cached",
-                             {"nodes": list(current_outputs), "prompt_id": prompt_id},
-                             broadcast=False)
-            executed = set()
-            output_node_id = None
-            to_execute = []
+        while len(to_execute) > 0:
+            # always execute the output that depends on the least amount of unexecuted nodes first
+            memo = {}
+            to_execute = sorted(list(
+                map(lambda a: (len(recursive_will_execute(prompt, self.outputs, a[-1], memo)), a[-1]), to_execute)))
+            output_node_id = to_execute.pop(0)[-1]
 
-            for node_id in list(execute_outputs):
-                to_execute += [(0, node_id)]
+            # This call shouldn't raise anything if there's an error deep in
+            # the actual SD code, instead it will report the node where the
+            # error was raised
+            self.success, error, ex = recursive_execute(self.server, prompt, self.outputs, output_node_id,
+                                                        extra_data, executed, prompt_id, self.outputs_ui,
+                                                        self.object_storage)
+            if self.success is not True:
+                self.handle_execution_error(prompt_id, prompt, current_outputs, executed, error, ex)
+                break
 
-            while len(to_execute) > 0:
-                # always execute the output that depends on the least amount of unexecuted nodes first
-                memo = {}
-                to_execute = sorted(list(
-                    map(lambda a: (len(recursive_will_execute(prompt, self.outputs, a[-1], memo)), a[-1]), to_execute)))
-                output_node_id = to_execute.pop(0)[-1]
-
-                # This call shouldn't raise anything if there's an error deep in
-                # the actual SD code, instead it will report the node where the
-                # error was raised
-                self.success, error, ex = recursive_execute(self.server, prompt, self.outputs, output_node_id,
-                                                            extra_data, executed, prompt_id, self.outputs_ui,
-                                                            self.object_storage)
-                if self.success is not True:
-                    self.handle_execution_error(prompt_id, prompt, current_outputs, executed, error, ex)
-                    break
-
-            for x in executed:
-                self.old_prompt[x] = copy.deepcopy(prompt[x])
-            self.server.last_node_id = None
-            if comfy.model_management.DISABLE_SMART_MEMORY:
-                comfy.model_management.unload_all_models()
+        for x in executed:
+            self.old_prompt[x] = copy.deepcopy(prompt[x])
+        self.server.last_node_id = None
+        if comfy.model_management.DISABLE_SMART_MEMORY:
+            comfy.model_management.unload_all_models()
 
 
 def validate_inputs(prompt, item, validated):
