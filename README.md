@@ -32,9 +32,10 @@ neural network layers in a graphical manner in ComfyUI and complete training, th
 
 3. **Modify ComfyUI for gradient calculation**
 
-   In ComfyUI, tensor calculations do not produce gradients. To resolve this issue, you need to modify
-   the `ComfyUI/execution.py` file by commenting out `with torch.inference_mode():` and moving all the code within this
-   context manager one level forward.
+   In ComfyUI, tensor calculations do not produce gradients. To resolve this issue, you need to modify the
+   `ComfyUI/execution.py` file by commenting out `with torch.inference_mode():` and moving all the code within this
+   context manager one level forward. If you prefer not to do this manually, you can copy the `replace/execution.py` from the project to
+   `ComfyUI/execution.py`, like this:
 
     ```bash
     copy .\replace\execution.py ..\..\execution.py
@@ -46,6 +47,7 @@ neural network layers in a graphical manner in ComfyUI and complete training, th
     ```bash
     copy .\replace\execution1.py ..\..\execution.py
     ```
+
 
 ## Description
 
@@ -75,7 +77,6 @@ pass
 
 **Description:**
 pass
-
 
 ### Pooling Layer
 
@@ -139,7 +140,6 @@ pass
 
 **Description:**
 pass
-
 
 ### Example of Residual Module
 
