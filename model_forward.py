@@ -14,11 +14,10 @@ class forward_test:
                 "device": (
                     ['cpu', 'cuda'],),
 
-
             },
             "optional": {
                 "ckpt_path": ("STRING", {
-                    "default": "D:/ComfyUI_windows_portable_nvidia_cu121_or_cpu/ComfyUI_windows_portable/lightning_logs/version_1/checkpoints/epoch=29-step=5520.ckpt"}),
+                    "default": 'ComfyUI/custom_nodes/comfyui_train/lightning_logs/version_1/checkpoints/epoch=19-step=3680.ckpt'}),
             }
         }
 
@@ -36,9 +35,16 @@ class forward_test:
 
         if load_ckpt and device == 'cuda':
             model.load_state_dict(torch.load(ckpt_path, map_location=device)['state_dict'])
-        else:
+        elif load_ckpt and device == 'cpu':
             model.res_cpu()
             model.load_state_dict(torch.load(ckpt_path, map_location='cpu')['state_dict'])
+            tensor = tensor.cpu()
+        elif load_ckpt == False and device == 'cpu':
+            model.res_cpu()
+            tensor = tensor.cpu()
+        elif load_ckpt == False and device == 'cuda':
+            model.res_cuda()
+            tensor = tensor.to(device)
 
         with torch.inference_mode():
             out, out_list = model(tensor)
