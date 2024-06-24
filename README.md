@@ -49,22 +49,112 @@ neural network layers in a graphical manner in ComfyUI and complete training, th
 
 ## Description
 
+### Conv Layer
+
+<div style="text-align:center;">
+    <img src="readme_fig/cnn_layer/cnn_layer.png" alt="Conv Layer" width="400"/>
+</div>
+
+**Description:**
+pass
+
+### Activation Function
+
+<div style="text-align:center;">
+    <img src="readme_fig/activation_function/activation_function.png" alt="Activation Function" width="400"/>
+</div>
+
+**Description:**
+pass
+
+### Normalization
+
+<div style="text-align:center;">
+    <img src="readme_fig/normalization/normalization.png" alt="Normalization" width="400"/>
+</div>
+
+**Description:**
+pass
+
+
+### Pooling Layer
+
+<div style="text-align:center;">
+    <img src="readme_fig/pooling_layer/pooling_layer.png" alt="Pooling Layer" width="400"/>
+</div>
+
+**Description:**
+pass
+
+### View
+
+<div style="text-align:center;">
+    <img src="readme_fig/view.png" alt="View" width="400"/>
+</div>
+
+**Description:**
+pass
+
 ### Fully Connected Layer
 
-![Fully Connected Layer](readme_fig/linear/linear.png)
+<div style="text-align:center;">
+    <img src="readme_fig/linear/linear.png" alt="Fully Connected Layer" width="400"/>
+</div>
 
 **Description:**
 pass
 
-### Conv Layer
-![Conv Layer](readme_fig/cnn_layer/cnn_layer.png)
+### Create model
+
+<div style="text-align:center;">
+    <img src="readme_fig/create_model.png" alt="Create model" width="400"/>
+</div>
 
 **Description:**
 pass
 
-### activation function
-![activation_function](readme_fig/activation_function/activation_function.png)
+### create dataset
+
+<div style="text-align:center;">
+    <img src="readme_fig/dataset/create_dataset.png" alt="create dataset" width="400"/>
+</div>
 
 **Description:**
 pass
 
+### train
+
+<div style="text-align:center;">
+    <img src="readme_fig/train.png" alt="train" width="400"/>
+</div>
+
+**Description:**
+pass
+
+### pre train model
+
+<div style="text-align:center;">
+    <img src="readme_fig/pre_train/pre_train.png" alt="pre train model" width="400"/>
+</div>
+
+**Description:**
+pass
+
+
+### Example of Residual Module
+
+<div style="text-align:center;">
+    <img src="readme_fig/res_combination/res_combination.png" alt="Example of Residual Module" width="512"/>
+</div>
+
+**Description:**
+pass
+
+### test your train model
+
+<div style="text-align:center;">
+    <img src="readme_fig/forward_test.png" alt="test your train model" width="1024"/>
+</div>
+
+**Description:**
+pass
