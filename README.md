@@ -49,14 +49,22 @@ neural network layers in a graphical manner in ComfyUI and complete training, th
 
 ## Description
 
+### Fully Connected Layer
+
 ![Fully Connected Layer](readme_fig/linear/linear.png)
 
-**Fully Connected Layer Description**
+**Description:**
+pass
 
-**Structure and Connections:**
-In a fully connected layer, each neuron is connected to all neurons in the previous layer. If the previous layer has \( n \) neurons and the current layer has \( m \) neurons, then each neuron in the current layer will have \( n \) inputs. Therefore, the weight matrix \( W \) of the fully connected layer is an \( m \times n \) matrix, and the bias vector \( b \) is a vector of length \( m \).
+### Conv Layer
+![Conv Layer](readme_fig/cnn_layer/cnn_layer.png)
 
-**Mathematical Representation:**
-Let the input vector be \( \mathbf{x} \), the weight matrix be \( \mathbf{W} \), and the bias vector be \( \mathbf{b} \). The output \( \mathbf{y} \) of the fully connected layer can be represented as:
-\[ \mathbf{y} = \mathbf{W} \mathbf{x} + \mathbf{b} \]
-Each element \( y_i \) of the output is obtained by calculating the dot product of the input vector and the corresponding row of the weight matrix, then adding the bias term.
+**Description:**
+pass
+
+### activation function
+![activation_function](readme_fig/activation_function/activation_function.png)
+
+**Description:**
+pass
+
