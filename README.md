@@ -219,7 +219,8 @@ term, akin to how normalization layers adjust and scale input data for optimal t
 **Description:**
 Integrating previously constructed layers into the neural network architecture, defining how the network computes the
 difference between its output and the true labels (loss), and setting the learning rate.The entire network architecture
-can be saved for Python to call upon.Example Code: [use_python_Instantiate_network_example/a.py](use_python_Instantiate_network_example/a.py)
+can be saved for Python to call upon.Example
+Code: [use_python_Instantiate_network_example/a.py](use_python_Instantiate_network_example/a.py)
 
 ### create dataset
 
@@ -228,7 +229,30 @@ can be saved for Python to call upon.Example Code: [use_python_Instantiate_netwo
 </div>
 
 **Description:**
-pass
+This node converts data into an iterator-like form and performs preprocessing tasks such as resizing all
+images to a uniform size and applying z-score normalization. Typically, mean and standard deviation values for
+normalization are based on statistics from large datasets like ImageNet or can be calculated from your own dataset. When
+a single image is input into this node, it outputs a preprocessed tensor suitable for training or testing your neural
+network.But now, it only supports image classification tasks, and the dataset should be structured as follows.
+
+- train_data/
+    - male/
+        - image1.jpg
+        - image2.jpg
+        - ...
+    - female/
+        - image101.jpg
+        - image102.jpg
+        - ...
+- val_data/
+    - male/
+        - image1.jpg
+        - image2.jpg
+        - ...
+    - female/
+        - image101.jpg
+        - image102.jpg
+        - ...
 
 ### train
 
@@ -237,16 +261,9 @@ pass
 </div>
 
 **Description:**
-pass
-
-### pre train model
-
-<div style="text-align:center;">
-    <img src="readme_fig/pre_train/pre_train.png" alt="pre train model" width="400"/>
-</div>
-
-**Description:**
-pass
+This node involves updating neural network parameters through gradient descent using pre-defined models and
+datasets (`train_dataset` and optionally `val_dataset`). It allows customization of where training data is saved during
+the process.
 
 ### Example of Residual Module
 
@@ -255,7 +272,28 @@ pass
 </div>
 
 **Description:**
-pass
+In previous research, it has been observed that directly outputting results from neural networks may not always yield
+optimal performance. Therefore, the concept of using residual connections has been proposed to enhance network
+performance. In this project, every layer node supports residual connections as an example.
+
+#### What are Residual Connections?
+
+Residual connections, popularized by the ResNet architecture, involve adding the input of a layer to its output before
+applying the activation function. This allows the network to learn residual functions (the difference between input and
+output) rather than learning completely new representations from scratch. This approach has been shown to mitigate the
+vanishing gradient problem and improve training convergence, especially in deep networks.
+
+### pre train model
+
+<div style="text-align:center;">
+    <img src="readme_fig/pre_train/pre_train.png" alt="pre train model" width="400"/>
+</div>
+
+**Description:**
+If you find building overly complex models challenging, you can leverage efficient models like VGG-16, ResNet-50,
+Inception-v3, EfficientNet-B0, and more pretrained models that I will include at this node later. You can either use
+their architectures or their weights trained on specific datasets, adding your own defined layers to adapt them to fit
+the dataset you've collected."
 
 ### test your train model
 
@@ -263,5 +301,6 @@ pass
     <img src="readme_fig/forward_test.png" alt="test your train model" width="1024"/>
 </div>
 
-**Description:**
-pass
+I am using the [Gender Classification Dataset](https://www.kaggle.com/datasets/cashutosh/gender-classification-dataset)
+published by Ashutosh Chauhan to test this project. Here is my workflow:
+[train.json](train.json)
