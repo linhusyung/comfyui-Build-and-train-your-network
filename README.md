@@ -173,8 +173,10 @@ average pooling to the desired output size. For 2-dimensional inputs:
 - **AdaptiveAvgPool2d**: Outputs a 2D tensor with a specified output size.
 
 The adaptive average pooling operation is defined as:
-$f(x)_{i,j} = \frac{1}{\text{kernel\_size}[0] \times \text{kernel\_size}[1]} \sum_{m=0}^{\text{kernel\_size}[0]-1} \sum_
-{n=0}^{\text{kernel\_size}[1]-1} x_{i \times \text{stride}[0] + m, j \times \text{stride}[1] + n}$
+$$
+f(x)_{i,j} = \frac{1}{\text{kernel\_size}[0] \times \text{kernel\_size}[1]} \sum_{m=0}^{\text{kernel\_size}[0]-1} \sum_
+{n=0}^{\text{kernel\_size}[1]-1} x_{i \times \text{stride}[0] + m, j \times \text{stride}[1] + n}
+$$
 
 #### Max Pooling (MaxPool2d)
 
@@ -183,8 +185,10 @@ Max Pooling extracts the maximum value from each patch of the feature map. For 2
 - **MaxPool2d**: Computes the maximum value over a spatial window.
 
 The max pooling operation is defined as:
-$f(x)_{i,j} = \max_{m=0, \ldots, \text{kernel\_size}[0]-1} \max_{n=0, \ldots, \text{kernel\_size}[1]-1} x_{i \times
-\text{stride}[0] + m, j \times \text{stride}[1] + n}$
+$$
+f(x)_{i,j} = \max_{m=0, \ldots, \text{kernel\_size}[0]-1} \max_{n=0, \ldots, \text{kernel\_size}[1]-1} x_{i \times
+\text{stride}[0] + m, j \times \text{stride}[1] + n}
+$$
 
 #### Average Pooling (AvgPool2d)
 
@@ -193,8 +197,10 @@ Average Pooling computes the average value of each patch of the feature map. For
 - **AvgPool2d**: Computes the average value over a spatial window.
 
 The average pooling operation is defined as:
-$f(x)_{i,j} = \frac{1}{\text{kernel\_size}[0] \times \text{kernel\_size}[1]} \sum_{m=0}^{\text{kernel\_size}[0]-1} \sum_
-{n=0}^{\text{kernel\_size}[1]-1} x_{i \times \text{stride}[0] + m, j \times \text{stride}[1] + n}$
+$$
+f(x)_{i,j} = \frac{1}{\text{kernel\_size}[0] \times \text{kernel\_size}[1]} \sum_{m=0}^{\text{kernel\_size}[0]-1} \sum_
+{n=0}^{\text{kernel\_size}[1]-1} x_{i \times \text{stride}[0] + m, j \times \text{stride}[1] + n}
+$$
 
 Pooling layers help in reducing the spatial dimensions of the input while retaining important features, making the
 network more robust and efficient in processing spatial hierarchies.
