@@ -82,35 +82,43 @@ output feature map.
 </div>
 
 **Description:**
-The activation function plays a crucial role in neural networks by introducing non-linearity, allowing the network to learn complex patterns and representations. The activation function operates on the output of each neuron, transforming the linear combination of inputs into a non-linear output. Common activation functions include:
+The activation function plays a crucial role in neural networks by introducing non-linearity, allowing the network to
+learn complex patterns and representations. The activation function operates on the output of each neuron, transforming
+the linear combination of inputs into a non-linear output. Common activation functions include:
 
-### ReLU (Rectified Linear Unit)
+#### ReLU (Rectified Linear Unit)
+
 ReLU transforms negative input values to zero and keeps positive values unchanged, defined as:
 $f(x) = \max(0, x)$
 ReLU is computationally simple and widely used in many deep learning models.
 
-### Sigmoid
+#### Sigmoid
+
 The Sigmoid function compresses input values to a range between 0 and 1, defined as:
 $f(x) = \frac{1}{1 + e^{-x}}$
 It is often used in the output layer to represent probabilities.
 
-### Tanh (Hyperbolic Tangent)
+#### Tanh (Hyperbolic Tangent)
+
 Tanh compresses input values to a range between -1 and 1, defined as:
 $f(x) = \tanh(x)$
 Compared to Sigmoid, Tanh's output mean is zero, which can be beneficial for certain networks.
 
-### Leaky ReLU
+#### Leaky ReLU
+
 Leaky ReLU is a variant of ReLU that allows small negative values to pass through, defined as:
 $f(x) = x \text{ if } x > 0, \text{ otherwise } f(x) = \alpha x$
 (usually $\alpha = 0.01$).
 
-### Softmax
-The Softmax function converts a vector of values into a probability distribution, where the probability of each value is proportional to the exponent of the value, defined as:
+#### Softmax
+
+The Softmax function converts a vector of values into a probability distribution, where the probability of each value is
+proportional to the exponent of the value, defined as:
 $f(x_i) = \frac{e^{x_i}}{\sum_{j} e^{x_j}}$
 Softmax is often used in the output layer of a classification network to represent the probabilities of each class.
 
-By applying an activation function after each layer, neural networks can capture more complex and diverse features, thereby enhancing the model's expressive power and performance.
-
+By applying an activation function after each layer, neural networks can capture more complex and diverse features,
+thereby enhancing the model's expressive power and performance.
 
 ### Normalization
 
@@ -119,7 +127,31 @@ By applying an activation function after each layer, neural networks can capture
 </div>
 
 **Description:**
-pass
+Normalization techniques play a crucial role in improving the training and performance of neural networks by stabilizing
+and accelerating convergence. Here are different types of normalization methods commonly used in deep learning:
+
+### Batch Normalization (BatchNorm1d, BatchNorm2d)
+
+Batch Normalization normalizes the activations of each layer across the batch dimension. For 1-dimensional and
+2-dimensional inputs:
+
+- **BatchNorm1d**: Normalizes along the feature dimension (typically used in fully connected layers).
+- **BatchNorm2d**: Normalizes along the channel dimension (typically used in convolutional layers).
+
+For both BatchNorm1d and BatchNorm2d, the normalization process is defined as:
+$f(x) = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} \cdot \gamma + \beta$
+where $\( \mu \) and \( \sigma^2 \)$ are the mean and variance of the batch, $\( \epsilon \)$ is a small constant to prevent
+division by zero, $\( \gamma \) and \( \beta \)$ are learnable parameters (scale and shift).
+
+### Layer Normalization (LayerNorm)
+
+Layer Normalization normalizes the activations across the feature dimension independently for each example in the batch.
+It is defined as:
+$f(x) = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} \cdot \gamma + \beta $
+where $\( \mu \) and \( \sigma^2 \)$ are the mean and variance computed along the feature dimension.
+
+By incorporating normalization techniques like BatchNorm1d, BatchNorm2d, or LayerNorm into neural networks, training can
+be more stable and converge faster, leading to improved overall performance and generalization.
 
 ### Pooling Layer
 
