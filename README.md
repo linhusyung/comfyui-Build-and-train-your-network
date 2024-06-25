@@ -205,7 +205,7 @@ The View layer flattens a tensor along a specified dimension, maintaining its da
 **Description:**
 In neural networks, the Fully Connected layer, also known as a Dense layer, connects every neuron in one layer to every
 neuron in the next layer. This type of layer performs a linear transformation on its input, followed by an optional bias
-addition, similar to how normalization layers adjust and scale input data for optimal training and performance. 
+addition, similar to how normalization layers adjust and scale input data for optimal training and performance.
 
 The Fully Connected layer linearly transforms the input tensor by multiplying it with learned weights and adding a bias
 term, akin to how normalization layers adjust and scale input data for optimal training and performance.
@@ -217,7 +217,9 @@ term, akin to how normalization layers adjust and scale input data for optimal t
 </div>
 
 **Description:**
-pass
+Integrating previously constructed layers into the neural network architecture, defining how the network computes the
+difference between its output and the true labels (loss), and setting the learning rate.The entire network architecture
+can be saved for Python to call upon.Example Code: [use_python_Instantiate_network_example/a.py](use_python_Instantiate_network_example/a.py)
 
 ### create dataset
 
