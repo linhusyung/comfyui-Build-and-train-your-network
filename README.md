@@ -1,8 +1,16 @@
 # ComfyUI Build and Train Your Network
 
-This is an extension project aimed at customizing neural network layers (such as linear layers, convolutional layers,
-etc.) in ComfyUI and providing simplified task training functionality. With this project, you can easily build custom
-neural network layers in a graphical manner in ComfyUI and complete training, thereby extending its functionality.
+Stable Diffusion is an image generation technique based on diffusion models. Its core idea involves simulating diffusion
+processes by iteratively adding noise and using neural networks to predict and remove the noise, thereby generating
+high-quality images. This approach is not limited to image generation; with appropriate network architecture and
+training data, it can be adapted for various other tasks. The application of neural networks extends beyond image
+generation. By adjusting network structures and loss functions, neural networks can also perform tasks such as
+classification and regression. This flexibility makes neural networks a powerful tool for handling a wide range of
+machine learning tasks.
+
+This project aims to expand custom neural network layers (such as linear layers, convolutional layers, etc.) within
+ComfyUI and provide simplified task training functionalities. Through this project, users can easily construct custom
+neural network layers and perform training in ComfyUI using a graphical interface.
 
 ## Table of Contents
 
@@ -34,7 +42,8 @@ neural network layers in a graphical manner in ComfyUI and complete training, th
 
    In ComfyUI, tensor calculations do not produce gradients. To resolve this issue, you need to modify the
    `ComfyUI/execution.py` file by commenting out `with torch.inference_mode():` and moving all the code within this
-   context manager one level forward. If you prefer not to do this manually, you can copy the `replace/execution.py` from the project to
+   context manager one level forward. If you prefer not to do this manually, you can copy the `replace/execution.py`
+   from the project to
    `ComfyUI/execution.py`, like this:
 
     ```bash
@@ -48,7 +57,6 @@ neural network layers in a graphical manner in ComfyUI and complete training, th
     copy .\replace\execution1.py ..\..\execution.py
     ```
 
-
 ## Description
 
 ### Conv Layer
@@ -58,7 +66,14 @@ neural network layers in a graphical manner in ComfyUI and complete training, th
 </div>
 
 **Description:**
-pass
+The operation of a convolutional layer involves sliding convolution kernels over the input feature map, performing
+element-wise multiplication with the local region at each step, and then summing all the multiplication results to form
+a single element in the output feature map. The movement of the kernels and the size of the output feature map are
+controlled by setting the stride and padding. If the input feature map has multiple channels (e.g., three channels for
+an RGB image), each channel of the input is multiplied element-wise with the corresponding channel of the kernel, and
+the results across all channels are summed to produce the output. When the number of output channels is 8, the system
+employs 8 convolution kernels for convolutional operations and concatenates them along the channel dimension to form the
+output feature map.
 
 ### Activation Function
 
@@ -67,7 +82,31 @@ pass
 </div>
 
 **Description:**
-pass
+The activation function plays a crucial role in neural networks by introducing non-linearity, allowing the network to
+learn complex patterns and representations. The activation function operates on the output of each neuron, transforming
+the linear combination of inputs into a non-linear output. Common activation functions include:
+
+#### ReLU (Rectified Linear Unit)
+
+ReLU transforms negative input values to zero and keeps positive values unchanged, defined as:
+\[ f(x) = \max(0, x) \]
+
+ReLU is computationally simple and widely used in many deep learning models.
+
+#### Sigmoid
+
+The Sigmoid function compresses input values to a range between 0 and 1, defined as:
+\[ f(x) = \frac{1}{1 + e^{-x}} \]
+It is often used in the output layer to represent probabilities.
+
+#### Tanh (Hyperbolic Tangent)
+
+Tanh compresses input values to a range between -1 and 1, defined as:
+\[ f(x) = \tanh(x) \]
+Compared to Sigmoid, Tanh's output mean is zero, which can be beneficial for certain networks.
+
+By applying an activation function after each layer, neural networks can capture more complex and diverse features,
+thereby enhancing the model's expressive power and performance.
 
 ### Normalization
 
