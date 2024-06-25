@@ -82,31 +82,45 @@ output feature map.
 </div>
 
 **Description:**
-The activation function plays a crucial role in neural networks by introducing non-linearity, allowing the network to
-learn complex patterns and representations. The activation function operates on the output of each neuron, transforming
-the linear combination of inputs into a non-linear output. Common activation functions include:
+The activation function plays a crucial role in neural networks by introducing non-linearity, allowing the network to learn complex patterns and representations. The activation function operates on the output of each neuron, transforming the linear combination of inputs into a non-linear output. Common activation functions include:
 
-#### ReLU (Rectified Linear Unit)
-
+### ReLU (Rectified Linear Unit)
 ReLU transforms negative input values to zero and keeps positive values unchanged, defined as:
-\[ f(x) = \max(0, x) \]
-
+$$
+f(x) = \max(0, x)
+$$
 ReLU is computationally simple and widely used in many deep learning models.
 
-#### Sigmoid
-
+### Sigmoid
 The Sigmoid function compresses input values to a range between 0 and 1, defined as:
-\[ f(x) = \frac{1}{1 + e^{-x}} \]
+$$
+f(x) = \frac{1}{1 + e^{-x}}
+$$
 It is often used in the output layer to represent probabilities.
 
-#### Tanh (Hyperbolic Tangent)
-
+### Tanh (Hyperbolic Tangent)
 Tanh compresses input values to a range between -1 and 1, defined as:
-\[ f(x) = \tanh(x) \]
+$$
+f(x) = \tanh(x)
+$$
 Compared to Sigmoid, Tanh's output mean is zero, which can be beneficial for certain networks.
 
-By applying an activation function after each layer, neural networks can capture more complex and diverse features,
-thereby enhancing the model's expressive power and performance.
+### Leaky ReLU
+Leaky ReLU is a variant of ReLU that allows small negative values to pass through, defined as:
+$$
+f(x) = x \text{ if } x > 0, \text{ otherwise } f(x) = \alpha x
+$$
+(usually \(\alpha = 0.01\)).
+
+### Softmax
+The Softmax function converts a vector of values into a probability distribution, where the probability of each value is proportional to the exponent of the value, defined as:
+$$
+f(x_i) = \frac{e^{x_i}}{\sum_{j} e^{x_j}}
+$$
+Softmax is often used in the output layer of a classification network to represent the probabilities of each class.
+
+By applying an activation function after each layer, neural networks can capture more complex and diverse features, thereby enhancing the model's expressive power and performance.
+
 
 ### Normalization
 
