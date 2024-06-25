@@ -130,7 +130,7 @@ thereby enhancing the model's expressive power and performance.
 Normalization techniques play a crucial role in improving the training and performance of neural networks by stabilizing
 and accelerating convergence. Here are different types of normalization methods commonly used in deep learning:
 
-### Batch Normalization (BatchNorm1d, BatchNorm2d)
+#### Batch Normalization (BatchNorm1d, BatchNorm2d)
 
 Batch Normalization normalizes the activations of each layer across the batch dimension. For 1-dimensional and
 2-dimensional inputs:
@@ -140,10 +140,11 @@ Batch Normalization normalizes the activations of each layer across the batch di
 
 For both BatchNorm1d and BatchNorm2d, the normalization process is defined as:
 $f(x) = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} \cdot \gamma + \beta$
-where $\( \mu \) and \( \sigma^2 \)$ are the mean and variance of the batch, $\( \epsilon \)$ is a small constant to prevent
+where $\( \mu \) and \( \sigma^2 \)$ are the mean and variance of the batch, $\( \epsilon \)$ is a small constant to
+prevent
 division by zero, $\( \gamma \) and \( \beta \)$ are learnable parameters (scale and shift).
 
-### Layer Normalization (LayerNorm)
+#### Layer Normalization (LayerNorm)
 
 Layer Normalization normalizes the activations across the feature dimension independently for each example in the batch.
 It is defined as:
@@ -160,7 +161,43 @@ be more stable and converge faster, leading to improved overall performance and 
 </div>
 
 **Description:**
-pass
+Pooling layers are used in convolutional neural networks (CNNs) to progressively reduce the spatial size of the
+representation to reduce the amount of parameters and computation in the network, and to control overfitting. Here are
+different types of pooling layers commonly used:
+
+#### Adaptive Average Pooling (AdaptiveAvgPool2d)
+
+Adaptive Average Pooling allows the output size to be specified instead of the kernel size. It adaptively performs
+average pooling to the desired output size. For 2-dimensional inputs:
+
+- **AdaptiveAvgPool2d**: Outputs a 2D tensor with a specified output size.
+
+The adaptive average pooling operation is defined as:
+$f(x)_{i,j} = \frac{1}{\text{kernel\_size}[0] \times \text{kernel\_size}[1]} \sum_{m=0}^{\text{kernel\_size}[0]-1} \sum_
+{n=0}^{\text{kernel\_size}[1]-1} x_{i \times \text{stride}[0] + m, j \times \text{stride}[1] + n}$
+
+#### Max Pooling (MaxPool2d)
+
+Max Pooling extracts the maximum value from each patch of the feature map. For 2-dimensional inputs:
+
+- **MaxPool2d**: Computes the maximum value over a spatial window.
+
+The max pooling operation is defined as:
+$f(x)_{i,j} = \max_{m=0, \ldots, \text{kernel\_size}[0]-1} \max_{n=0, \ldots, \text{kernel\_size}[1]-1} x_{i \times
+\text{stride}[0] + m, j \times \text{stride}[1] + n}$
+
+#### Average Pooling (AvgPool2d)
+
+Average Pooling computes the average value of each patch of the feature map. For 2-dimensional inputs:
+
+- **AvgPool2d**: Computes the average value over a spatial window.
+
+The average pooling operation is defined as:
+$f(x)_{i,j} = \frac{1}{\text{kernel\_size}[0] \times \text{kernel\_size}[1]} \sum_{m=0}^{\text{kernel\_size}[0]-1} \sum_
+{n=0}^{\text{kernel\_size}[1]-1} x_{i \times \text{stride}[0] + m, j \times \text{stride}[1] + n}$
+
+Pooling layers help in reducing the spatial dimensions of the input while retaining important features, making the
+network more robust and efficient in processing spatial hierarchies.
 
 ### View
 
