@@ -32,7 +32,7 @@ neural network layers and perform training in ComfyUI using a graphical interfac
 
    If you haven't installed ComfyUI [before](https://github.com/comfyanonymous/ComfyUI.git) you can go here to install
    it and follow the steps, or download [my version
-   of ComfyUI](https://github.com/comfyanonymous/ComfyUI.git).
+   of ComfyUI](https://drive.google.com/file/d/1TKazmYR-KEl5C3Qh5YIq0e1D3NNweRqv/view?usp=drive_link).
 1. **Clone the repository**
     ```bash
     git clone https://github.com/linhusyung/comfyui-Build-and-train-your-network.git
