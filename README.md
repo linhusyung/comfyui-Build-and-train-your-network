@@ -313,3 +313,5 @@ Here is the train log of the network I built:
 <div style="text-align:center;">
     <img src="readme_fig/train_log.png" alt="test your train model" width="240"/>
 </div>
+
+If you like it, please give it a star! ⭐
